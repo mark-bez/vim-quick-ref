@@ -1,0 +1,1292 @@
+= Vim cheatsheet
+:toc: left
+:imagesdir: images
+:stylesdir: css
+:stylesheet: material-blue.css
+
+== Start Vim with a session
+
+----
+gvim -S ~/documents/repos/notes/Session.vim (for p53 computer)
+gvim -S **/notes/session.vim
+----
+
+NOTE: Default Windows behavior is for filepaths/filenames to be case insensitive.
+
+Applications often have their own equivalents.
+
+== Directories
+
+$HOME - the user directory
+:echo $HOME
+
+$MYVIMRC - location of the vimrc file used on initialization
+:echo $MYVIMRC
+
+$VIMRUNTIME - location of the Vim support files
+:echo $VIMRUNTIME
+
+$VIM - location of the Vim system directory
+:echo $VIM
+
+== Vim initialization
+
+The files are searched in the following order and only the first one that is found is read.
+
+.	$HOME/_vimrc
+. $HOME/vimfiles/vimrc
+. $VIM/_vimrc
+
+Following the recommendation in the Help file, I have put my vimrc in $HOME/vimfiles.
+That file contains the following text to redirects to repos/vimrc/vimrc:
+
+----
+source $HOME\Documents\repos\vimrc\vimrc
+----
+
+Then, the system vimrc file is read for initializations.  
+The path of this file is shown with the ":version" command and is usually "$VIM/vimrc".
+On my P53 computer this is: C:\Program Files (x86)\Vim\_vimrc
+
+Then the plugin scripts are loaded.
+All directories in the 'runtimepath' option are searched for the "plugin" sub-directory.
+All files ending in ".vim" are sourced (in alphabetical order per directory).
+
+My plugins plugged folder is here: C:\Users\echo\vimfiles\plugged
+
+$HOME\vimfiles\plugged
+
+This folder is explicitly called from the vimrc file with:
+
+----
+call plug#begin('$HOME/vimfiles/plugged')
+----
+
+After the plugins are loaded, the GUI initializations are performed.
+
+Then the viminfo file is read.
+
+Then windows are opened.
+
+== Start Vim and then load a Session file:
+
+. Winkey gvim (pwd is ~/echo/documents/repos/)
+. so notes/Session.vim
+. so **/notes/session.vim
+
+The path is relative to the pwd if there is no file loaded and to the current buffer location if there is one loaded.
+
+== Redirect the vimrc file to another location under Git control
+
+In _vimrc located in $MYVIMRC, add this one line: 
+
+
+== Start Vim with a different vimrc file:
+
+. gvim
+. so vimrc-config/vimrc-basic
+
+The path is relative to the pwd if there is no file loaded and to the current buffer location if there is one loaded.
+
+You can also open a different vimrc file and then source it with :so %
+
+When you start gvim from Windows Run, it looks in the C: drive as the root path.
+Therefore, to pass a filename, you have to add the path from C:
+
+== Opening existing files
+
+Navigate to the project directory.
+Set it as the current working directory.
+Then...
+
+* :sf [file] - splits the current window and opens the file with a path relative to the current buffer.
+* :vert sf [file] - vertically splits the current window and opens the file with a path relative to the current buffer.
+* :tabf [file] - open a file with the path relative to the current buffer in a new tab.
+* :tabe [file] - open file with the path relative to the present working directory in a new tab.
+* :e [file] - opens a file with the path relative to the present working directory. Replaces an empty buffer if it is open.
+
+== Viewing buffers already in the buffer list
+
+* :b start typing filename and <TAB> - replace buffer in the current window with the named buffer
+* :b# - replace buffer in the current window with the numbered buffer
+* :sb start typing filename and <TAB> - split the current window horizontally and open the named buffer
+* :vert sb start typing filename and <TAB> - split the current window vertically and open the named buffer
+* ctrl-w r - switch the contents of two buffer windows
+
+== Open a new buffer for editing
+
+* :e: - reload the current file so changes made to the vimrc are enacted for the file
+* :enew - hide the buffer in the current window and replace it with a new empty buffer
+* :enew! - hide the buffer in the current window, deleting any unsaved changes, and replace it with a new empty buffer
+* :new - split the current window horizontally and open a new empty buffer
+* :vert new - split the current window vertically and open a new empty buffer
+* :badd - open a buffer without viewing it in the window so you can do an xref or conref to the file using autocomplete
+* :ball - open all loaded buffers in their own horizontal window
+* :vert ball - open all loaded buffers in their own vertical window
+* :view <filename> - open the buffer as read-only
+
+== Buffers list
+
+* :sb <TAB> - Shows list of buffers in the folder you can autocomplete
+:buffers - shows list of buffers
+:ls - shows list of buffers
+:Buffers - fzf plugin shows list of buffers in friendlier format with preview
+
+* %	- the buffer in the current window
+* #	- the alternate buffer viewed with :b#
+* a	- an active buffer: it is loaded and visible
+* h	- a hidden buffer: It is loaded, but currently not displayed in a window |hidden-buffer|
+* -	- a buffer with 'modifiable' off
+* =	- a read-only buffer
+* +	- a modified buffer
+
+== Switch between buffers
+
+* [b = switch to the next buffer in the rotation
+* ]b = switch to the previous buffer in the rotation
+* :bn = switch to the next buffer in the rotation
+* :ls = list the open buffers
+* :b12 = switch to buffer number 12
+* :b <start typing buffer name>
+
+== Find files
+
+* :edit <filepath>/<filename> - searches relative to the present working directory and opens the file; Do not need to have a buffer open.
+* :edit **/<filename><TAB> - searches for files in the present working directory and its subdirectories; Do not need to have a buffer open.
+* :find <filepath>/<filename> - searches relative to the directory of the current buffer (because 'set path=.') Must have a buffer open to do this.
+* :find **/<filename><TAB> - searches for files in the directory of the current buffer and its subdirectories Must have a buffer open to do this.
+
+* ctrl-^ - Toggle between current and previous file
+* :e # - Toggle between current and previous file
+
+== Close files
+
+.Buffers
+* :w - write (save the buffer to disk)
+* :bd - close the active buffer, prompting you if there are unwritten changes
+* :bd! - close the active buffer and delete unwritten changes
+* :e! - overwrite the open buffer with what is saved on the drive
+* :10,25bd - close buffers 10-25
+
+.Windows
+* :clo {count} - close the window without deleting the active buffer. Will not close the last window i.e. the application.
+* :q - close the window without deleting the active buffer. Will close the last window i.e. The application but prompts you if there are unsaved buffers.
+
+.Tabs
+* :tabcl[ose] - close the tab
+
+.Application
+* :q - close the window without deleting the active buffer. Will close the last window i.e. The application but prompts you if there are unsaved buffers.
+* :wq - write the buffer and close the window, ending the session if it is the last buffer.
+* :qa - close all windows. Will also close the last window i.e. The application but prompts you if there are unsaved buffers.
+* :qa! - close all windows. Will also close the last window i.e. The application and  including the last one  (
+* :%bd - same as :qa
+* :q! - force quit (close the window and if there are unsaved changes in the active buffer, don't prompt you and don't save them. therefor the application without saving unsaved changes to any buffers)
+
+== Navigate
+
+=== Jump within lines
+
+f,t,F,T - using quick-scope plugin
+
+=== Jump within a screen
+
+Look at where you want to put the cursor and note the nearest two characters.
+
+<leader>q first-letter second-letter (using vim-sneak plugin)
+
+At each instance of those two characters, a code character appears in the text.
+Type the character.
+
+=== Jump to positions off the screen
+
+:n - move by line
+/, ? - search
+90% - jumps to the 90% line number
+
+=== Navigate files
+
+* gf - goto filename
+* ^ - jump back to previous file after gf
+* Ctrl-w f - open the file in a new window
+
+To make it work, you may need to change the path setting or change how you write the file.
+Instead of `tasks.adoc` you may need to write `./admin/notes/tasks.adoc`.
+Or the current working directory may need to be the directory that the current buffer is in.
+Or, you may need to change the scope of the 'path' setting.
+
+=== Navigate screen position
+
+* H - The document remains in place and the current line jumps to the line number at the top of the window.
+* M - The document remains in place and the current line jumps to the line number at the middle of the window.
+* L - The document remains in place and the current line jumps to the line number at the bottom of the window.
+
+* + - move cursor to start of next line without adding a new line
+* - - move cursor to start of previous line without adding a new line
+
+=== Scroll document
+
+* ctrl-e - scroll downward in the document
+* ctrl-y - scroll upward in the document
+* zt - The cursor stays on the current line and the document scrolls so the line is now at the top of the window.
+* zz - The cursor stays on the current line and the document scrolls so the line is now in the middle of the window.
+* zb - The cursor stays on the current line and the document scrolls so the current line is now at the bottom of the window.
+* z<ENTER> - same as zt
+
+== Editing
+
+Editing command structure:
+<number><operator><([modifier]text object) or motion>
+
+Motion commands operate from the current cursor position.
+Text object commands operate on the whole object regardless of cursor position.
+Use text object commands for editing whenever possible for greater efficiency.
+
+=== Operators
+
+* y
+* c
+* d
+* > - indent right
+* < - indent left
+* = - autoindent
+* gU - make uppercase
+* gu - make lowercase
+* g~ - swap case
+
+=== Text objects
+
+=== Text object modifiers
+
+* i - inner
+* a - around
+
+==== Plaintext text objects
+
+* w - a word 
+* s - a sentence
+* p - a paragraph
+
+==== Programming language text objects
+
+* "
+* '
+* `
+* )
+* ]
+* }
+
+==== Markup language text objects
+
+* t
+* >
+
+=== Motions
+
+* + - move cursor to the first character of the next line
+* - - move cursor to the first character of the previous line
+* w - move cursor to start of next word
+* W - move cursor to start of next WORD
+* e - move cursor to end of next word
+* b - move cursor to start of previous word
+* ge - move cursor to end of previous word
+* ) - move cursor to start of next sentence
+* } - move cursor to start of next paragraph
+* [[ - move cursor to start of next section
+
+=== Other editing actions
+
+* ctrl-w - Corrects typing error by deleting the previous word when in Insert mode.
+* s - Delete character and enter Insert mode
+* :%y - yank the entire file
+* d/pattern - delete from the cursor forward to the start of the pattern
+* d/pattern/e - delete from the cursor forward to the end of the pattern
+* c/pattern - change from the cursor forward to the start of the pattern
+* c/pattern/e - change from the cursor forward to the end of the pattern
+* :.,+10m100 - move the range from the current line plus the next ten to line 100
+* :.,+10m'a - move the range from the current line plus the next ten to the line with marker 'a'
+//
+* S or cc - deletes the entire line and enter insert mode to substitute text - very useful for deleting the next number of lines, such as 5S. Contrast with typing d5j that keeps in Normal mode.
+* ea - append text to the end of the word
+* 2s - substitute the next three characters in a word (useful when cw changes too many and r only replaces one) for example change Hoggit to Hobbit
+* 20i- <Esc> - insert 20 hyphens
+
+== Wrap lines
+
+* :set wrap linebreak - soft wrap lines
+* :set nowrap nolinebreak - don't soft-wrap lines
+* :set wrap - turns on soft wrap
+* :set linebreak - forces the soft wrapping at word boundaries instead of inside words
+* :set tw=0 - stops automatic hard wrapping at a column
+
+== Resize text
+
+. Hold down and do not release the spacebar.
+. Either:
+* To make smaller: Press and release the equals key (=), brief pause, then *quickly* press the minus key (-) one or more times as needed.
+* To make larger: Press and release the equals key (=), brief pause, then *quickly* press the equals key (=) again one or more times as needed.
+
+. Release the spacebar.
+
+Alternatively:
+
+:set guifont=*
+
+== Mapped function keys
+
+* F1 = Opens the Vim help
+* F2 = Toggles show/hide whitespace characters defined in listchars setting
+* F3 = Remove trailing whitespace
+* F4 = After a :g/pattern command, F3 copies the result to a new buffer
+* F5 = Paste the date
+* F6 = Paste the date and time
+* F7 = Toggles spell check
+* F8 = Toggles relative/standard line numbering
+* F9 =
+* F10 = Zoom vsplit window
+* F11 = Unzoom vsplit window
+* F12 = Implements ALEFix
+
+== Spell check
+
+F7 - show spelling errors based on the spell file specified in the vimrc
+]s - go to next error
+[s - go to previous error
+
+:SpellCheck - List spelling errors in quickfix list using plugin
+
+zg - add word under cursor to dictionary.
+zug - remove word under cursor to dictionary.
+z= - get suggestion for misspelled word and select number to fix
+
+
+== Automatic spelling correction with abbreviations
+
+Use the vim-abolish/vim-correction plugins.
+These use the abbreviations list to make the correction.
+
+When you finish typing the incorrect word and hit the spacebar, it will automatically fix it.
+Examples:
+
+* wroking
+* teh
+
+To see a list of words:
+:abbrev
+
+== Switch characters
+
+* <leader>c - character switch hobbit
+* <leader>w - switch words
+* <leader> right/left ENTER - :h move word one place
+
+== Open a calendar
+
+* :Calendar -view=month
+* :Calendar -view=year
+* :Calendar -view=year -split=vertical -width=27
+* :IndentLinesToggle to remove vertical indent lines as F9 does not work in this plugin.
+
+ Switch between views with < and > keys.
+
+== Miscellaneous
+
+* ctrl-c - Abort insert mode and abandon changes
+* https://vimhelp.org/ - official help
+* :vert h:<topic> - Open the Help in a vertical split
+* :tab h<topic> - Open the Help in a tab to make it easier to read
+* :set scb to scroll two vertical splits together
+* :set noscb to stop scrolling two vertical splits together
+* :r file1 - paste the contents of file1 at the current cursor position - great for templates
+* :%s/$^\n// - removing blank lines
+* :%s/$^\n\n// - removing two blank lines
+* :%s/$^\n\n/\r/ - replacing two blank lines with one blank line
+* :set all - show all options. ! puts each on its own line, including plugins being used
+* :set[!] - show all options that differ from their default value. ! puts each on its own line.
+* :set <option>? - show the value of the option
+* :set <option>=10
+* :[range]ce[nter] [column width] - center the lines
+* :[range]sort - sorts alphabetically
+* g ctrl-g - puts a word count in the statusline
+* ctrl-l - redraw the screen
+* dw - delete the whitespace in front of the cursor up to the next word.
+* gi - switch to Insert mode and return to the last edit
+* ga - show the character code for the character under the cursor (decimal, hexadecimal, octal, digraph)
+
+== Rename a file using DOS command
+
+:!rename % file2
+:!rename file1 file2
+
+== Run a macro
+
+* qN - start a macro recording and store in N
+* q - stop macro recording
+* @N - play back macro stored in N
+* @@@ - repeat the previously played macro
+* 10@N - play back the macro stored in N 10 times
+
+qaq to empty register a before storing a macro in register a.
+
+
+== Change current working directory
+
+* :cd <relative path> - change current working directory for the session
+* :lcd <relative path> - change current working directory for the window
+* :tcd <relative path> - change current working directory for the tab
+
+== Open a tab
+
+<leader>a
+
+== Substitute in one file
+
+* :%s/find/replace/gc
+* :3,45s/find/replace/gc
+
+* % = global in the document (not just the line - as it is a line editor)
+* s = substitute
+* g = global in the line (so it will find multiple instances on a line)
+* c = ask for confirmation before making each substitution
+
+Does not create a quicklist that you can view.
+It just makes the changes in the file.
+
+You can also use " or | for the pattern delimiter instead of /.
+This avoids having to escape the / in filepaths.
+
+== Substitute across files with arglist
+
+* :args **/*.filetype
+* :args (to verify the list)
+* :argdo %s/word/replace/g
+
+== Change the colorscheme
+
+* :colorscheme <Enter> = names the current colorscheme
+* :colorscheme <name> <Enter> = switches to the colorscheme
+* :colorscheme <start typing the name> <TAB> = autocomplete
+* :colorscheme <tab> = rotate through available colorschemes
+
+NOTE: I modified vimfiles/colors/gruvbox.vim to make the headings red and saved it to my vim-config folder.
+
+== Xterm colors for vimrc
+
+https://codeyarns.com/tech/2011-07-29-vim-chart-of-color-names.html
+
+== Change the font
+
+* :set guifont=Roboto_Mono:h16
+* :set guifont=*
+
+== Insert completion
+
+https://vim.fandom.com/wiki/Omni_completion
+
+Vim has many options for completion that pull words/terms/filenames from different places.
+
+=== Built-in keyword completion
+
+The basic completion is keyword completion, triggered with ctrl-n or ctrl-p.
+ctrl-n looks forward in the file for keywords and ctrl-p looks backward in the file.
+It pulls words from, all of the buffers loaded in the Vim instance and saved.
+It will not work on a buffer that has not been saved.
+
+IMPORTANT: If the default word insert completion is not working, it is probably because you didn't set the present working directory to the directory with your files.
+This catches me out a lot, so don't forget.
+
+To activate, in insert mode, start typing the term, then use crtl-n or ctrl-p.
+If there is more than one option, a list appears. 
+Use ctrl-n or ctrl-p repeatedly to cycle through the options.
+
+To simplify this, I have mapped ctrl-n to the TAB key so I can just press TAB.
+With this mapping, hit TAB and keep hitting TAB to select the option you want, then hit ENTER.
+
+You need to set where Vim will look for the completion terms with set completion,
+My current options are:
+
+set complete+=.,w,b,u,i
+
+The default is ".,w,b,u,t,i", which means to scan:
+1. the current buffer
+2. buffers in other windows
+3. other loaded buffers
+4. unloaded buffers
+5. tags
+6. included files
+
+NOTE: You have to use the syntax +=
+
+=== Filename completion
+
+Some of the other completion types are: 
+
+* ctrl-x ctrl-f to complete a filename (insert filename completion)
+* ctrl-x ctrl-l to complete a line higher up in the file (insert line completion)
+
+I have mapped filename completion in the vimrc to <leader><Tab> to reduce keystrokes.
+
+To insert-complete filenames with extensions, you need to add the . character to the definition of a word.
+To insert-complete filenames with hyphens you need to add the - character to the definition of a word.
+
+:set iskeyword+=\- 
+:set iskeyword+=\.
+
+Filename completion is harder to achieve.
+An alternative is to create a text file list of filenames with:
+$dir /b >dir.txt
+You can then use regular word complete to complete filenames instead of the ctrl-x ctrl-f completion.
+
+See :h ins-completion.
+
+=== Omni completion
+
+:help new-omni-completion 
+
+For specific language file types, "omni completion" is used.
+Various programming languages are natively built into Vim, such as SQL, HTML, XML, CSS, JavaScript and PHP and will work out of the box.
+Other languages such as C and PHP will also take advantage of a tags file created with a utility like cTags. 
+I won't need cTags as I don't use these languages.
+
+To use Omni completion, you have to add this to the vimrc to turn it on as it is not on by default.
+
+set omnifunc=syntaxcomplete#Complete
+
+=== AutoComplPop plugin
+
+To reduce keystrokes, you can use the AutoComplPop plugin to automatically popup the options lists as you type.
+This avoids having to type ctrl-n or ctrl-p or the mapped TAB key.
+
+https://github.com/othree/vim-autocomplpop/blob/master/doc/acp.txt
+
+In a text file or ascidoc file or other file type not recognized by Vim as a supported omni completion language, the plugin uses the basic ctrl-n/ctrl-p completion as indicated in the status line.
+
+image::vim-keyword-completion.png[width=60%]
+
+In an XML file, which is a supported omni completion language, the plugin uses the omni completion type.
+
+image::vim-omni-completion.png[width=50%]
+
+To toggle this behavior:
+
+* :AcpEnable
+* :AcpDisable
+
+To switch to filename completion, just use the mapping <leader><Tab>.
+This is very convenient and makes this plugin a possibility for use with DITA CMS.
+
+The popup behavior can be slow.
+
+There are a few t hings you can do to speed it up.
+
+* Lower the timeoutlen and ttimeoutlen settings in the vimrc.
+* Do not include the 'i' option and make it so that the popup doesn't appear until you have typed three characters with the following vimrc settings:
+
+----
+let g:acp_enableAtStartup = 1
+let g:acp_completeOption = '.,w,b,u'
+let g:acp_behaviorFileLength = 3
+let g:acp_behaviorXmlOmniLength = 3
+----
+
+=== Optimizing completion for XML in a CMS
+
+See xref:#writing-xml[]
+
+== Defining what a word is
+
+For use with Autocomplete, you can define a word to include additional characters.
+This is useful for DITA conrefs that have GUIDs, .xml filenames, and # IDs.
+It is set for only the active buffer.
+
+:set iskeyword+=\-  (a word includes hyphens, which you need to insert-complete GUIDs and filenames)
+:set iskeyword+=\.  (a word includes periods which you need to insert-complete filenames with extensions (.png, .xml))
+:set iskeyword+=\#  (a word includes # for IDs but I think it's better to not do this)
+
+This can also be set in the vimrc.
+
+
+== Global patterns
+
+:g/pattern/d - deletes all lines that include the pattern
+
+:g/pattern/s/old/new/gc - Do a substitution in only those lines that match the pattern
+
+== Collect lines matching a pattern
+
+Uses the g global command.
+
+Either:
+
+. :g/pattern/y a - copy lines with the pattern to register a or use A to append to register A.
+. :new newfile.txt
+. "ap - to paste
+
+Or,
+
+. :g/pattern/
+. F4
+
+This one uses a mapping in the vimrc.
+
+NOTE: This is different from vimgrep.
+With vimgrep, the lines are truncated in the quickfix list so you can't copy out the whole line.
+
+* %g/hobbit/m$ - moves lines in the document containg the word hobbit to the end of the document
+
+The v command is the inVerse of g.
+Therefore:
+
+* %g/foo/d - delete all lines in the document that contain 'foo'
+* %v/foo/d - delete all lines in the document that DO NOT contain 'foo'
+* %v/foo/m$ - move all lines that DO NOT contain 'foo' to the end of the document
+* :v/foo/ then F3 - copy all lines that DO NOT contain foo and paste them into a new buffer
+* :g/foo/j - join any line containing 'foo' to its subsequent line
+
+== Format HTML
+
+The most complete strategy for cleaning up an HTML file might be to:
+
+. Filter it through pandoc (only if there is a lot of cruft in the code).
+. Run Tidy to fix errors in the HTML and do some tidying.
+. Run Prettier to do nice tidying.
+
+Tidy will fix errors in HTML as well as format it although the formatting does not seem to be as nice as the formatting result of Prettier.
+To use:
+
+:tidyHTML
+
+Prettier will format HTML with the line editor command but it will not fix errors in the code.
+To use:
+
+:Prettier
+
+Prettier is NOT currently set up in the vimrc to automatically format HTML on save.
+
+== Format CSS
+
+Prettier is set to automatically format CSS on save using the following setting in the vimrc.
+
+let g:prettier#autoformat_require_pragma = 0
+
+See also xref:lintingcss[]
+
+== Format XML
+
+I am currently using :XMLlint.
+Tidy can also tidy up XML with :tidyXML
+
+[#lintingcss]
+== Lint CSS
+
+Currently using ALE for linting.
+See the vimrc for more details.
+
+To lint CSS:
+
+. Open a file.
+. Place stylelintrc.json file in the directory with the file
+. <leader>cd to set the file as the working directory
+. Run :ALELint.
+. :lopen to see the list of errors.
+. :lclose to close the list.
+
+== Lint XML
+
+To lint XML:
+
+XMLlint is set up to automatically lint files.
+Open the XML file and then open the location list :lopen.
+Any errors will be marked in the margin.
+
+To validate a DITA file per the command in the vimrc:
+command! DITAvalid %!xmllint % --valid --noout
+
+:DITAvalid
+
+NOTE: The DITA file must be in the same folder as the DTD for the topic type eg concept.dtd.
+
+== Linting HTML
+
+To lint HTML:
+
+* :Prettier
+* :copen
+
+== Use Git from within Vim
+
+It is better to use GitHub client as this is linked to GitHub for easy push/pull without security codes and you can see the changes more easily.
+
+* :Git - gives the status
+* :q - closes the window (status window or any diff window)
+* :GV - browse the commits and view diffs
+* :GV! - browse commits and view diffs for only the current buffer
+* :Gdiff  - diffs against the last commit in a horizontal split
+* :Git blame - lists commits and person responsible
+* :Git push
+
+To allow a Git repo push to the GitHub remote or pull from it, you need to use a personal access token.
+To do this, you must clone the repo from GitHub to your local drive using the following syntax:
+
+----
+git clone https://mark-bez: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@github.com/mark-bez/notes.git
+----
+
+== Diff two buffers
+
+* :windo difft - diffs two buffers in vertical splits
+* Open file1, then :diffsplit file2
+* Win key vdiff file1 file2
+
+To copy a difference from one split to the other:
+
+* dp - put, when the cursor is on the line to copy
+* do - get, when the cursor is on the line that is empty
+
+== Marks
+
+* mN - mark the cursor position and store it in N
+* 'N - goto beginning of the line containing the mark stored in N
+* `N - go to cursor position of the mark stored in N
+* :marks - list all marks
+* :delm N - delete mark stored in N
+* :delm! - delete all marks
+* :delm a-z - delete marks a-z
+* :del abc - delete marks a, b, and c
+* d'N - delete from the cursor to the beginning of the line containing marker N
+* d`N - delete from the cursor to the line/column position of marker N
+* '' - return to the line where the cursor was before the last jump  (Two single quotes)
+* `` - return to the cursor position before the last jump - undoes the jump (Two back ticks)
+* `^ - return to the last position of cursor in insert mode
+* `. - return to the last change in current buffer
+* `" - return to the last exited current buffer
+* `0 - go to the file other than this one that you last edited
+
+== Screen arrangements
+
+:only - close all other split screens except the current one
+:res +N or -N - change the height of a horizontal window by N lines
+z{height] - change the height of a horizontal window to N lines
+:vert res +N or -N - change the width of a vertical window by N columns
+ctrl-w r - swap split windows
+
+== Print a buffer
+
+:hardcopy > file.txt
+
+To print a PDF of a file, which is the only option for files other than AsciiDoc files:
+
+:hardcopy > file.ps
+
+This opens a dialog to convert to a PDF via a printer such as Microsoft or Adobe.
+Preferably, select Adobe, change the settings, such as to landscape and 'paper' size.
+To print Vim diff files, the colorscheme makes a difference to the output coloring.
+So far, gruvbox with background=light works well.
+
+== Lists
+
+* :changes - shows the last 100 changes that can be undone
+* :reg - shows the contents of the registers, also shown in a different format with Vim Sneak after pressing "
+* :jumps - shows the history of where the cursor jumped for the current window; a jump is (1)Freely jumping around a file, such as :20, (2) Jumping based on the window size, such as M, (3) Text block jumps, such as ( and {
+* :history - shows command history
+* :oldfiles - default vim
+* :undolist -
+* :map - lists the characters that are mapped
+* :bro[wse] old[files]
+* :Oldfiles - uses plugin
+
+= Jumps
+
+A jump is initiated by one of the following commands: '', `, G, /, ?, n, N, %, (, ), [[, ]], {, }, :s, :tag, L, M, H and the commands that start editing a new file.
+Basically, jumping to marks, searching, brackets, screen positions.
+The position of the cursor before the jump is remembered.
+You can return to that position with the '' and `` command.
+
+* :jumps
+* ctrl-o - moves back to older jumps
+* ctrl-i - moves forward in the jumplist
+
+
+== Changes
+
+Locations of edits are stored in the change list.
+
+* :changes
+* g; - places cursor at the last place an edit was made without undoing the edit, repeat to go back in history
+* g, - repeat to go forward in the history of edits
+
+== Find
+
+* :find <TAB> to open files in the path of the *current file*
+* :sfind to open it in a split window
+* :vert sfind to open it in a vertical split window
+
+These are different to :edit <TAB>, which opens files in the path of the current working directory
+
+:find uses the path defined in :set path?
+By default this is path=.,,
+
+This means search relative to the directory of the current file AND the current directory.
+This may result in too many hits and slow the search.
+
+To search only relative to the directory of the current file, use:
+:set path=.
+
+To search in the current directory only use an empty string between two commas use:
+:set path=,,
+
+What if we wanted to search downward recursively through our project? 
+It is common to open your text editor in your project root ( often denoted by a vcs file such as a .git folder ). 
+To ensure that Vim finds all of our project files when we search for them, we use * and **. 
+The asterisks represent wildcards, with * matching 0 or more characters and ** matching only directories. 
+By setting your path to set path=.,,,**, you can ensure that Vim will search all our project files.
+
+Can use wildcards such as :find *word* or **/*word
+
+== Run a vimscript
+
+. Create the vimscript file filename.vim
+. Open the file you want to run the script on.
+. :source filename.vim
+
+== Registers
+
+Registers are global to the session.
+To see the contents of the registers:
+:reg
+
+* The unnamed register "" - text deleted with the "d", "c", "s", "x" commands or copied with the yank "y" command
+* 10 numbered registers "0 to "9 -  text from yank and delete commands when *at least a whole line was changed*
+* The small delete register "- text from commands that delete less than one line, such as with dw
+* 26 named registers "a to "z or "A to "Z
+* Three read-only registers ":, "., "% - can use them only with the "p", "P", and ":put" commands and with CTRL-R
+* Alternate buffer register "#
+* The expression register "=
+* The selection and drop registers "*, "+ and "~
+* The black hole register "_
+* Last search pattern register "/
+
+"<register>
+
+For example:
+
+* "ay - Copy to register a
+* "ap - Paste from register a
+
+The default register that yank copies to is ".
+
+The previously yanked text is stored in registers 0-9.
+To paste a previous undo, first identify the register it is saved in, then "Np such as "4p
+
+== Copying and pasting text to the commandline
+
+This is yank followed by ctrl-r on the commandline.
+
+. Yank the string (to the default unnamed register)
+. In the commandline:
++
+----
+:<Ctrl r>
+----
++
+This adds the " character which means it's waiting for a register number/character.
+
+. Type " to paste the yanked string from the unnamed register.
+
+This is
+:ctrl-r "
+
+== Autocomplete path in commandline
+
+ctrl-x ctrl-f
+
+== Generate a PDF file from an Asciidoc file
+
+Uses https://github.com/habamax/vim-asciidoctor plugin.
+
+In addition to asciidoctor, you must have asciidoctor-pdf, asciidoctor-diagram, and asciidoctor-rouge extensions installed for HTML and DOCX file creation.
+
+* $ gem install asciidoctor-pdf
+* $ gem install asciidoctor-diagram
+* $ gem install asciidoctor-rouge
+
+Type the following *quickly*:
+
+* <leader>oo - open the Asciidoc file in a browser
+* <leader>ch the <ENTER> - generate an HTML file
+* <leader>oh then <ENTER> - open the previously generated HTML file
+* <leader>cp then <ENTER> - generate a PDF file
+* <leader>op then <ENTER> - open the previously generated PDF file
+* <leader>cx then <ENTER> - print to .docx
+* <leader>ox - open the previously generated .docx file
+
+NOTE: Make sure the cursor is not on a character with <leader>cp or ch.
+It will otherwise clash with switching the letter.
+
+After generating, use :bd to close the window and return to the document.
+
+== Code folding
+
+* zo or spacebar - open a fold 
+* zO - open a fold and all its subfolds 
+* zc - close a fold 
+* zC - close a fold and all its subfolds 
+* za - toggle a fold 
+* zr - open a fold by one level 
+* zm - close a fold by one level 
+* zR - open all folds 
+* zM - close folds <leader>x - initiate code folding in XML files 
+
+If the cold folding doesn't work for a section, the fold may have been deleted with zd.
+If you write and close the file then reopen it, all of the folds should be properly remade.
+
+To define the characters used for folding...TO DO
+
+== Copy filepath
+
+Copies to unnamed register "
+
+cp - copies filename
+
+cP - copies filepath
+
+p to paste
+
+== Pattern search
+
+:h Q_pa
+
+            matches any single character  \.
+                   matches start of line  ^
+                           matches <EOL>  $
+                   matches start of word  \<
+                     matches end of word  \>
+    matches a single char from the range  \[a-z]
+  matches a single char not in the range  \[^a-z]
+         matches a white space character  \s
+     matches a non-white space character  \S
+                           matches <Esc>  \e
+                           matches <Tab>  \t
+                            matches <CR>  \r
+            group a pattern into an atom  \(\
+    matches 2 to 5 of the preceding atom  \{2,5}
+ matches 0 or more of the preceding atom  \*
+ matches 1 or more of the preceding atom  \+
+    matches 0 or 1 of the preceding atom  \=
+              separates two alternatives  \|
+
+== Regular expressions
+
+To set up a regex:
+
+. Use the search to identify the expression that matches what you want (/)
+. Build the substitution expression with an empty match, which defaults to the last search pattern.
+
+For example:
+
+/pattern
+
+:%s//replacement/g
+
+You can also use ctrl-r / to paste in the previous search pattern.
+
+== vimgrep to list lines that match a pattern
+
+* :vimgrep word %
+* :vimgrep "words with spaces" %
+* :vimgrep /words with spaces/ %
+* :vimgrep word g %
+* :vimgrep word gj% %
+* :copen
+
+* g = global in the file (lists each instance on a separate quickfix line if line has multiple matches)
+* j = do not automatically jump to the first match
+* % = include in the listing which file you're on (eg 2 of 5) (the first %)
+* % = search the current buffer (the second %)
+
+For location list, specific to the window, instead of the global quickfix list:
+
+* :lvimgrep word %
+* :lvimgrep /words with spaces/ %
+* :lopen
+
+vimgrep is for searching and listing not collecting lines of text.
+It truncates the lines in the quickfix list.
+
+To view older or newer searches:
+
+* :colder
+* :lolder
+* :cnewer
+* :lnewer
+
+The default scope of the search is the working directory.
+
+* :vimgrep word gj% *.txt
+* :vimgrep /pattern/g **/*.txt
+* :vimgrep word g ##
+
+* *.txt = search only in text files in the current folder
+* **/*.txt = search in text files in the current folder and subfolders
+* ## = searches the set of files in the arglist
+
+== Editing files in ZIP files
+
+. vim file.zip
+. Choose the file you want to edit, change what you want, and exit with :x
+. If vim responds with "Cannot make changes, 'modifiable' is off", just run :set modifiable or :set ma.
+
+== Sessions
+
+:mks - creates a file called Session.vim in the current working directory; you can have a different Session.vim file for every project directory
+:mks! - overwrites the default Session.vim
+:mks mysesion.vim - creates a file called mysession.vim in the current working directory or other path
+gvim -S filepath/filename.vim - opens gVim and loads the saved session
+:so filepath/filename.vim to switch to a different session
+
+== Using the arglist
+
+During a working session, the buffers list becomes messy.
+An arglist can provide a stable subset of files that improves navigation.
+
+:args to list the files in the arglist
+:n to move to the next file in the list
+:first to move to the first
+:last to move to the last
+:rew same as :last
+:argadd file - add a file to the args list
+:argdel file - delete a file from the args list
+
+== Calculations
+
+From insert mode:
+ctrl-r =
+enter the calculation and press ENTER.
+
+If you have already typed the calculation into the buffer:
+
+. Yank only the expression without the equals sign into the unnamed register
+. shift-a to enter insert mode at the end of the line
+. <ctrl-r>= to enter the expression register
+. <ctrl-r>" to paste the yanked text from the unnamed register (that is the shift key with ")
+<enter> to perform the calculation and insert the result
+
+5*10=50
+
+5+5=10
+
+
+== Digraphs
+
+Keyboards don't have enough keys to show all characters that can be entered into a document.
+Additional characters are entered via codes, such as ASCII and Unicode.
+Different operating systems and application software have different ways for entering these codes.
+Not all fonts support all Unicode characters.
+Windows has the Character Map for entering these extended character codes.
+Windows also supports keysequence input of Unicode codes with Alt + nnnn(n).
+To enter Unicode 2014, type `Alt +2014`. You must use the numpad key for typing the + and 2014.
+Applications often have their own equivalents built in.
+Microsoft Word has its own method for selecting them, Oxygen has its own method.
+After entering the character, the application often converts the code to the 'glyph' character.
+Character glyphs can also be copied and pasted so another way to enter them is to copy the character from the internet.
+For entering extended characters in XML, you can also use &#nn; (decimal form) or &Xxnn; (hexadecimal form).
+There are two ways to enter extended characters in Vim.
+the cat 
+
+=== Digraphs
+
+Digraphs use two-character codes.
+To see the codes:
+
+:h digraph-table
+
+:h dig[raph]
+
+To enter a digraph, in insert mode:
+ctrl-k character1 character2
+
+To list digraphs:
+:dig
+
+щ
+ざ
+
+=== Direct entry of the Unicode code
+
+In insert mode, type:
+ctrl-v
+u
+The four or five digit unicode with the regular keyboard or numpad
+
+ctrl-v u2020 gives this:
+†
+
+ctrl-v u03c0 gives this:
+π
+
+To see the character code in the statusline:
+ga
+
+:help i_CTRL-V_digit
+
+For substitutions:
+
+:%s/<Ctrl-v>u200e//g
+
+[#writing-xml]
+== Writing XML
+
+This setup is for XML files stored in a CMS where file addressing is with GUID filenames instead of file paths and the XML files and image files are all in one folder.
+Only keywords in the file buffers will be available for omni completion for the XML language.
+Only files in the present working directory and subfolders will be available for filename completion.
+
+* Place the set of files you will be working on in their own folder.
+* Open one of the XML files in a new Vim instance
+* Set the present working directory to the folder the file is in.
+* :badd dita-elements.txt to load the buffer but keep it hidden - has a subset of the DITA elements I may use.
+* :badd <warehouse files> as needed to load files I might conref to as needed
+* Create a text file of GUIDS (guid.txt) and :badd to load the buffer
+* Ensure AutoComplPop is enabled :AcpEnable (should be on by default)
+
+* To start a new file, :new filename_guid.xml, then <leader>dt or dc or dnt, or dnc to add the basic structure. Can also use enew filename to replace the currently viewed buffer in the window.
+* To type the XML tags, use the xml.vim filetype plugin in combination with the mapping to automatically close XML/HTML tags in the vimrc.
+* The XML file tag completion behavior uses the vimrc mapping `inoremap ><Tab> ><Esc>F<lyt>o</<C-r>"><Esc>O<Space>`
+* The omni completion popup via AcpEnable draws on the content and fielnames of the open buffers. Press <ENTER> to add the highlighted word and <TAB> to cycle through the list.
+* To use filename completion, type <leader><TAB> and completion will switch from omni completion to filename completion, drawing on the files in the present working directory.
+* Automatic typo correction is enabled via vim-abolish/vim-correction plugins and the vimrc setting that adds XML files for use with this plugin.
+* Make sure the iskeyword setting in the vimrc includes the hyphens and period so a GUID and filename extension are recognized a word for autocompletion (set iskeyword+=\-)
+
+* To add the GUID part of a link in a way that deletes the GUID so you don't reuse it:
+** Open the GUID text file in a vsplit :vsp guid.txt
+** Position the cursor at the correct location in the topic.
+** daW to delete the GUID
+** ctrl-h to return to the topic and 'p' to put.
+
+* To add a link:
+* `<conref/xref/image href="..` then <leader><Tab> to complete the filename.
+* For a conref, the syntax is <filename.xml>#<warehouse-topic-id>/<conref-id>  The two id's can be completed if the warehouse file buffer is loaded.
+
+If you don't want to use AutoComplPop, you can disable it with :AcpDisable.
+Then, use <TAB> to do standard word completion and <leader><Tab> to do filename completion.
+
+== Formatting columns
+
+=== Method 1 - when the text of each column is equal in width
+
+. Add a separator before the start of each column except the first column, such as a comma.
++
+----
+one,two
+one,two
+one,two
+one,two
+----
+
+. Visually select the lines with shift-v.
+. Add spaces before and after the equals sign with substitution, such as  s/,/            ,/g 
++
+----
+one          ,two
+one          ,two
+one          ,two
+one          ,two
+----
+
+. Use block visual select to delete the separator character (comma).
+
+=== Method 2 - when the text of each column is **un**equal in width
+
+Starting with this example:
++
+----
+hobbits,column2
+elves,column2
+dinosaurs,column2
+rumplestiltskin,column2
+----
+
+. Perform the steps in method 1 to create two or more columns.
+
+----
+hobbits              ,column2
+elves              ,column2
+dinosaurs              ,column2
+rumplestiltskin              ,column2
+----
++
+Note that the second column is uneven.
+
+. In the first row, place your cursor in the screen column position you want to align the text of the second column to.
++ 
+In this example it might be screen column 20. 
+
+. Using ctrl-v, visually select downwards through each row. 
+. Press << to "unindent" the right hand side of each equation towards the column you selected.
++
+----
+hobbits            ,column2
+elves              ,column2
+dinosaurs            ,column2
+rumplestiltskin            ,column2
+----
+
+. Press . as many times as you need to to align the columns.
+
+----
+hobbits            ,column2
+elves              ,column2
+dinosaurs          ,column2
+rumplestiltskin    ,column2
+----
+
+. Use block visual select to delete the separator character (comma).
+
+=== Method 3
+
+Use junegunn/vim-easy-align or other plugin
+
+== To do next
+
+* Add more headings to vimrc for better organization
+
+== Best cheatsheets:
+
+* http://www.zzapper.co.uk/vimtips.html
+* https://devhints.io/vim
+* https://blog.carbonfive.com/vim-text-objects-the-definitive-guide/
+
+k
+== Vim initialization
+
+The files are searched in the following order and only the first one that is found is read.
+
+.	$HOME/_vimrc
+. $HOME/vimfiles/vimrc
+. $VIM/_vimrc
+
+RECOMMENDATION: Put all your Vim configuration stuff in the $HOME/vimfiles/ to make it easy to copy it to another system.
+This is where I have my file now.
+That file redirects to repos/vimrc/vimrc
+
+Then, the system vimrc file is read for initializations.  
+The path of this file is shown with the ":version" command.  
+Mostly it's "$VIM/vimrc" and on my P53 computer it is: C:\Program Files (x86)\Vim\_vimrc
+
+Then the plugin scripts are loaded.
+All directories in the 'runtimepath' option will be searched for the "plugin" sub-directory.
+All files ending in ".vim" will be sourced (in alphabetical order per directory), also in subdirectories.
+
+I have the plugins plugged folder here:
+C:\Users\echo\vimfiles\plugged
+
+Which is called from the vimrc file:
+
+----
+call plug#begin('$HOME/vimfiles/plugged')
+----
+
+Then GUI initializations are performed.
+
+Then the viminfo file is read.
+
+Then windows are opened.
