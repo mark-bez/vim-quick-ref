@@ -1,8 +1,15 @@
-= Vim cheatsheet
+= Vim quick reference
 :toc: left
 :imagesdir: images
-:stylesdir: css
+:stylesdir: C:\Users\echo\Documents\repos\vim-quick-ref\css
 :stylesheet: material-blue.css
+:doctype: article
+
+== Super tips
+
+* q: or :ctrl-f - editable list of recent commands, select a command and press ENTER to issue
+* helpgrep {word} - search the help
+* :set foldmethod=indent - folds XML and HTML after pretty printing
 
 == Start Vim with a session
 
@@ -22,8 +29,6 @@ $HOME - the user directory
 
 $MYVIMRC - location of the vimrc file used on initialization
 :echo $MYVIMRC
-
-$VIMRUNTIME - location of the Vim support files
 :echo $VIMRUNTIME
 
 $VIM - location of the Vim system directory
@@ -80,7 +85,6 @@ The path is relative to the pwd if there is no file loaded and to the current bu
 
 In _vimrc located in $MYVIMRC, add this one line: 
 
-
 == Start Vim with a different vimrc file:
 
 . gvim
@@ -103,13 +107,6 @@ Then...
 * :vert sf [file] - vertically splits the current window and opens the file with a path relative to the current buffer.
 * :tabf [file] - open a file with the path relative to the current buffer in a new tab.
 * :tabe [file] - open file with the path relative to the present working directory in a new tab.
-* :e [file] - opens a file with the path relative to the present working directory. Replaces an empty buffer if it is open.
-
-== Viewing buffers already in the buffer list
-
-* :b start typing filename and <TAB> - replace buffer in the current window with the named buffer
-* :b# - replace buffer in the current window with the numbered buffer
-* :sb start typing filename and <TAB> - split the current window horizontally and open the named buffer
 * :vert sb start typing filename and <TAB> - split the current window vertically and open the named buffer
 * ctrl-w r - switch the contents of two buffer windows
 
@@ -149,17 +146,27 @@ Then...
 * :b12 = switch to buffer number 12
 * :b <start typing buffer name>
 
+With tpope/vim-unimpaired:
+
+]a - next buffer
+[b - previous buffer
+
 == Find files
 
+* <leader>f - use fzf fuzzy finder
 * :edit <filepath>/<filename> - searches relative to the present working directory and opens the file; Do not need to have a buffer open.
 * :edit **/<filename><TAB> - searches for files in the present working directory and its subdirectories; Do not need to have a buffer open.
 * :find <filepath>/<filename> - searches relative to the directory of the current buffer (because 'set path=.') Must have a buffer open to do this.
 * :find **/<filename><TAB> - searches for files in the directory of the current buffer and its subdirectories Must have a buffer open to do this.
-
-* ctrl-^ - Toggle between current and previous file
 * :e # - Toggle between current and previous file
+* ctrl-^ - Toggle between current and previous file
 
 == Close files
+Vim will quit when you:
+
+* Delete the last buffer
+* Close the last window
+* Close the last tab
 
 .Buffers
 * :w - write (save the buffer to disk)
@@ -181,15 +188,28 @@ Then...
 * :qa - close all windows. Will also close the last window i.e. The application but prompts you if there are unsaved buffers.
 * :qa! - close all windows. Will also close the last window i.e. The application and  including the last one  (
 * :%bd - same as :qa
-* :q! - force quit (close the window and if there are unsaved changes in the active buffer, don't prompt you and don't save them. therefor the application without saving unsaved changes to any buffers)
+* :q! - force quit (close the window and if there are unsaved changes in the active buffer, don't prompt you and don't save them. Therefor the application without saving unsaved changes to any buffers)
+
+== Screen elements
+
+* buffer - in-memory representation of a file that may not actually be saved as a file yet
+* window - a view into a buffer
+* tab - a workspace that contains one or more windows with different window layouts
+* tabline - the line at the top that contains tabs
+* quickfix window - displays the quickfix list
+* commandline - bottom area that allows you to send commands to Vim
+* commandline window - displays an editable list of the previous commands
+* statusline - shows information about the buffer
+
+In other programs, a tab is a proxy for a document.
 
 == Navigate
 
-=== Jump within lines
+=== Jump within the line
 
 f,t,F,T - using quick-scope plugin
 
-=== Jump within a screen
+=== Jump within the screen with vim-sneak
 
 Look at where you want to put the cursor and note the nearest two characters.
 
@@ -198,11 +218,19 @@ Look at where you want to put the cursor and note the nearest two characters.
 At each instance of those two characters, a code character appears in the text.
 Type the character.
 
+=== Jump within the screen with line numbers
+
+* 10j - jumps down 10 lines remaining in the current column
+* 10k - jumps up 10 lines remaining in the current column
+* 10+ - jumps down 10 lines and places the cursor in the first column
+* 10- - jumps up 10 lines and places the cursor in the first column
+ 
 === Jump to positions off the screen
 
-:n - move by line
-/, ? - search
-90% - jumps to the 90% line number
+* :n - move by line (after looking at the statusline to see how many lines the document has)
+* / or ? - search forward or backward
+* 90% - jumps to the 90% line number
+* Collapse the folds and locate the fold you need
 
 === Navigate files
 
@@ -256,16 +284,16 @@ Use text object commands for editing whenever possible for greater efficiency.
 
 === Text objects
 
-=== Text object modifiers
-
-* i - inner
-* a - around
-
 ==== Plaintext text objects
 
 * w - a word 
 * s - a sentence
 * p - a paragraph
+
+==== Text object modifiers
+
+* i - inner
+* a - around
 
 ==== Programming language text objects
 
@@ -275,6 +303,38 @@ Use text object commands for editing whenever possible for greater efficiency.
 * )
 * ]
 * }
+
+==== Enhancements with wellle/targets.vim
+
+Overrides Vim defaults to allow seeking to the next pair of target objects so you don't have to be inside the object.
+Also, adds the following separators:
+
+* , . ; : + - = ~ _ * # / | \ & $
+* >
+* <
+* t (tab)
+
+And adds the following modifiers:
+
+* in( - inside the next set of parentheses
+* il( - inside the previous set of parentheses
+
+== Change case
+
+*  ~    - Changes the case of current character
+*  guu  - Change current line from upper to lower.
+*  gUU  - Change current LINE from lower to upper.
+*  guw  - Change to end of current WORD from upper to lower.
+*  guaw - Change all of current WORD to lower.
+*  gUw  - Change to end of current WORD from lower to upper.
+*  gUaw - Change all of current WORD to upper.
+*  g~~  - Invert case to entire line
+*  g~w  - Invert case to current WORD
+*  guG  - Change to lowercase until the end of document.
+*  gU)  - Change until end of sentence to upper case
+*  gu}  - Change to end of paragraph to lower case
+*  gU5j - Change 5 lines below to upper case
+*  gu3k - Change 3 lines above to lower case
 
 ==== Markup language text objects
 
@@ -303,6 +363,7 @@ Use text object commands for editing whenever possible for greater efficiency.
 * d/pattern/e - delete from the cursor forward to the end of the pattern
 * c/pattern - change from the cursor forward to the start of the pattern
 * c/pattern/e - change from the cursor forward to the end of the pattern
+* :m+10 - move the current line 10 lines down
 * :.,+10m100 - move the range from the current line plus the next ten to line 100
 * :.,+10m'a - move the range from the current line plus the next ten to the line with marker 'a'
 //
@@ -340,7 +401,7 @@ Alternatively:
 * F4 = After a :g/pattern command, F3 copies the result to a new buffer
 * F5 = Paste the date
 * F6 = Paste the date and time
-* F7 = Toggles spell check
+* F7 = Toggles spell check based on the spell file specified in the vimrc
 * F8 = Toggles relative/standard line numbering
 * F9 =
 * F10 = Zoom vsplit window
@@ -349,7 +410,6 @@ Alternatively:
 
 == Spell check
 
-F7 - show spelling errors based on the spell file specified in the vimrc
 ]s - go to next error
 [s - go to previous error
 
@@ -358,7 +418,6 @@ F7 - show spelling errors based on the spell file specified in the vimrc
 zg - add word under cursor to dictionary.
 zug - remove word under cursor to dictionary.
 z= - get suggestion for misspelled word and select number to fix
-
 
 == Automatic spelling correction with abbreviations
 
@@ -391,6 +450,7 @@ To see a list of words:
 
 == Miscellaneous
 
+* @: - repeat the last commandline command, followed by @@ for additional repeats
 * ctrl-c - Abort insert mode and abandon changes
 * https://vimhelp.org/ - official help
 * :vert h:<topic> - Open the Help in a vertical split
@@ -427,7 +487,6 @@ To see a list of words:
 * 10@N - play back the macro stored in N 10 times
 
 qaq to empty register a before storing a macro in register a.
-
 
 == Change current working directory
 
@@ -470,6 +529,65 @@ This avoids having to escape the / in filepaths.
 
 NOTE: I modified vimfiles/colors/gruvbox.vim to make the headings red and saved it to my vim-config folder.
 
+The color of the folds is set in the vimrc with:
+highlight Folded guifg=goldenrod2
+
+== Navigate the quickfix list
+:help vim-qf
+
+* cn - next
+* cp - previously
+* cf - first
+* cl - last
+* ccn - go to number n
+
+With tpope vim-unimpaired
+
+* ]q - next 
+* [q - previous
+* [Q - first
+* ]Q - last
+
+To view older or newer quickfix lists:
+
+* :colder
+* :cnewer
+
+You can operate on the quickfix list:
+
+:cdo s/foo/bar/ | update
+:cfdo - close any buffers that open
+
+romainl/vim-qf plugin enhances behavior, such as opening the quickfix window automatically after a vimgrep, switching to absolute numbering, etc.
+
+To filter the list:
+
+:Keep {word}
+:Reject {word}
+:Restore
+
+bfrg/vim-qf-preview plugin allows a preview of the item in the quickfix list:
+To use this, first select the quickfix window (otherwise the 'p' keystroke will paste the contents of the default register.
+
+* p (with the cursor in the quickfix list) - open preview
+* ctrl-k, ctrl-j - Scroll up/down one text line in the preview
+* Shift-Home, Shift-End - Scroll to first/last line of displayed buffer in the preview
+* r - Scroll back to error line corresponding to the quickfix list item ("reset")
+* q, Ctrl-c - Close the popup window: 
+
+== Preview window
+
+A preview window can be opened with:
+
+:ped - open preview window
+:pc - close preview window
+:psearch /pattern/ - shows found match in preview window
+
+If you want the preview window to open as a popup:
+
+:previewpopup
+:previewpopup=height:20,width:40
+
 == Xterm colors for vimrc
 
 https://codeyarns.com/tech/2011-07-29-vim-chart-of-color-names.html
@@ -508,12 +626,13 @@ My current options are:
 set complete+=.,w,b,u,i
 
 The default is ".,w,b,u,t,i", which means to scan:
-1. the current buffer
-2. buffers in other windows
-3. other loaded buffers
-4. unloaded buffers
-5. tags
-6. included files
+
+* the current buffer
+* buffers in other windows
+* other loaded buffers
+* unloaded buffers
+* tags
+* included files
 
 NOTE: You have to use the syntax +=
 
@@ -577,7 +696,7 @@ This is very convenient and makes this plugin a possibility for use with DITA CM
 
 The popup behavior can be slow.
 
-There are a few t hings you can do to speed it up.
+There are a few things you can do to speed it up.
 
 * Lower the timeoutlen and ttimeoutlen settings in the vimrc.
 * Do not include the 'i' option and make it so that the popup doesn't appear until you have typed three characters with the following vimrc settings:
@@ -604,7 +723,6 @@ It is set for only the active buffer.
 :set iskeyword+=\#  (a word includes # for IDs but I think it's better to not do this)
 
 This can also be set in the vimrc.
-
 
 == Global patterns
 
@@ -729,8 +847,14 @@ To allow a Git repo push to the GitHub remote or pull from it, you need to use a
 To do this, you must clone the repo from GitHub to your local drive using the following syntax:
 
 ----
-git clone https://mark-bez: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@github.com/mark-bez/notes.git
+git clone https://mark-bez:
+
+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
+
+@github.com/mark-bez/notes.git
 ----
+
+I had to split it onto different lines to prevent GitHub from flagging it and disabling my token.
 
 == Diff two buffers
 
@@ -762,6 +886,11 @@ To copy a difference from one split to the other:
 * `" - return to the last exited current buffer
 * `0 - go to the file other than this one that you last edited
 
+Using kshenoy/vim-signature to place marks in the sign column.
+To stop showing marks in the sign column:
+:SignatureToggle
+There are also custom mappings for this plugin.
+
 == Screen arrangements
 
 :only - close all other split screens except the current one
@@ -785,6 +914,7 @@ So far, gruvbox with background=light works well.
 
 == Lists
 
+* q: or :ctrl-f - editable list of recent commands, select a command and press ENTER to issue
 * :changes - shows the last 100 changes that can be undone
 * :reg - shows the contents of the registers, also shown in a different format with Vim Sneak after pressing "
 * :jumps - shows the history of where the cursor jumped for the current window; a jump is (1)Freely jumping around a file, such as :20, (2) Jumping based on the window size, such as M, (3) Text block jumps, such as ( and {
@@ -795,7 +925,7 @@ So far, gruvbox with background=light works well.
 * :bro[wse] old[files]
 * :Oldfiles - uses plugin
 
-= Jumps
+== Jumps
 
 A jump is initiated by one of the following commands: '', `, G, /, ?, n, N, %, (, ), [[, ]], {, }, :s, :tag, L, M, H and the commands that start editing a new file.
 Basically, jumping to marks, searching, brackets, screen positions.
@@ -803,9 +933,8 @@ The position of the cursor before the jump is remembered.
 You can return to that position with the '' and `` command.
 
 * :jumps
-* ctrl-o - moves back to older jumps
+* ctrl-o - moves back to older jumps, including to a file that was just closed
 * ctrl-i - moves forward in the jumplist
-
 
 == Changes
 
@@ -942,15 +1071,19 @@ If you write and close the file then reopen it, all of the folds should be prope
 
 To define the characters used for folding...TO DO
 
+The color of the folds is set in the vimrc to look great with Gruvbox dark with:
+highlight Folded guifg=goldenrod2
+
+To fold HTML or XML after pretty printing:
+:set foldmethod=indent
+
 == Copy filepath
 
 Copies to unnamed register "
 
-cp - copies filename
-
-cP - copies filepath
-
-p to paste
+* cp - copies filename
+* cP - copies filepath
+* p to paste
 
 == Pattern search
 
@@ -1013,13 +1146,6 @@ For location list, specific to the window, instead of the global quickfix list:
 vimgrep is for searching and listing not collecting lines of text.
 It truncates the lines in the quickfix list.
 
-To view older or newer searches:
-
-* :colder
-* :lolder
-* :cnewer
-* :lnewer
-
 The default scope of the search is the working directory.
 
 * :vimgrep word gj% *.txt
@@ -1075,7 +1201,6 @@ If you have already typed the calculation into the buffer:
 
 5+5=10
 
-
 == Digraphs
 
 Keyboards don't have enough keys to show all characters that can be entered into a document.
@@ -1084,16 +1209,17 @@ Different operating systems and application software have different ways for ent
 Not all fonts support all Unicode characters.
 Windows has the Character Map for entering these extended character codes.
 Windows also supports keysequence input of Unicode codes with Alt + nnnn(n).
-To enter Unicode 2014, type `Alt +2014`. You must use the numpad key for typing the + and 2014.
-Applications often have their own equivalents built in.
-Microsoft Word has its own method for selecting them, Oxygen has its own method.
+
+On Windows, to enter Unicode 2014, type `Alt +2014`. 
+You must use the numpad key for typing the + and 2014.
+
+Applications often have their own equivalents built in for selecting extended characters.
 After entering the character, the application often converts the code to the 'glyph' character.
 Character glyphs can also be copied and pasted so another way to enter them is to copy the character from the internet.
 For entering extended characters in XML, you can also use &#nn; (decimal form) or &Xxnn; (hexadecimal form).
 There are two ways to enter extended characters in Vim.
-the cat 
 
-=== Digraphs
+=== Entry with Digraphs
 
 Digraphs use two-character codes.
 To see the codes:
@@ -1114,9 +1240,10 @@ To list digraphs:
 === Direct entry of the Unicode code
 
 In insert mode, type:
-ctrl-v
-u
-The four or five digit unicode with the regular keyboard or numpad
+
+. ctrl-v
+. u
+. The four or five digit unicode with the regular keyboard or numpad
 
 ctrl-v u2020 gives this:
 †
@@ -1168,6 +1295,9 @@ Only files in the present working directory and subfolders will be available for
 
 If you don't want to use AutoComplPop, you can disable it with :AcpDisable.
 Then, use <TAB> to do standard word completion and <leader><Tab> to do filename completion.
+
+To fold XML or HTML after pretty printing:
+:set foldmethod=indent
 
 == Formatting columns
 
@@ -1245,6 +1375,14 @@ rumplestiltskin    ,column2
 
 Use junegunn/vim-easy-align or other plugin
 
+== Vim Help
+
+* :helpgrep {word} - search Vim help
+* :help index - list of all commands
+* :help normal - list of normal mode commands
+* :help insert - list of insert mode commands
+* :help visual - list of visual mode commands
+
 == To do next
 
 * Add more headings to vimrc for better organization
@@ -1255,38 +1393,4 @@ Use junegunn/vim-easy-align or other plugin
 * https://devhints.io/vim
 * https://blog.carbonfive.com/vim-text-objects-the-definitive-guide/
 
-k
-== Vim initialization
 
-The files are searched in the following order and only the first one that is found is read.
-
-.	$HOME/_vimrc
-. $HOME/vimfiles/vimrc
-. $VIM/_vimrc
-
-RECOMMENDATION: Put all your Vim configuration stuff in the $HOME/vimfiles/ to make it easy to copy it to another system.
-This is where I have my file now.
-That file redirects to repos/vimrc/vimrc
-
-Then, the system vimrc file is read for initializations.  
-The path of this file is shown with the ":version" command.  
-Mostly it's "$VIM/vimrc" and on my P53 computer it is: C:\Program Files (x86)\Vim\_vimrc
-
-Then the plugin scripts are loaded.
-All directories in the 'runtimepath' option will be searched for the "plugin" sub-directory.
-All files ending in ".vim" will be sourced (in alphabetical order per directory), also in subdirectories.
-
-I have the plugins plugged folder here:
-C:\Users\echo\vimfiles\plugged
-
-Which is called from the vimrc file:
-
-----
-call plug#begin('$HOME/vimfiles/plugged')
-----
-
-Then GUI initializations are performed.
-
-Then the viminfo file is read.
-
-Then windows are opened.

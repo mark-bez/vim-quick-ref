@@ -1,0 +1,3188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.10">
+<title>Vim quick reference</title>
+<style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+
+@import url(//fonts.googleapis.com/css?family=Noto+Sans);
+@import url(https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css); /* Default asciidoc style framework - important */
+
+/* CUSTOMISATIONS */
+/* Change the values in root for quick customisation. If you want even more fine grain... venture further. */
+
+:root{
+--maincolor:#FFFFFF;
+--primarycolor:#2196F3; /* Blue 500 */
+--secondarycolor:#ba3925;
+--tertiarycolor: #186d7a;
+--sidebarbackground:#0D47A1; /* Blue 900 */
+--linkcolor:#90CAF9; /* Blue 200 */
+--linkcoloralternate:#f44336;
+--white:#FFFFFF;
+--black:#000000;
+}
+
+body{font-family: "Noto Sans",sans-serif;}
+
+#header{background-color:var(--primarycolor); padding:25px;max-width: none;}
+#footer{background-color: var(--sidebarbackground);}
+h1,h2 {background-color:var(--primarycolor);color:var(--white) !important;font-family:"Noto Sans",sans-serif;text-decoration:none;padding:10px;}
+h3 {color:var(--primarycolor);font-family:"Noto Sans",sans-serif;text-decoration:none;padding:10px 10px 10px 0;font-size:2rem;}
+h4,h5,h6{color:var(--primarycolor);}
+.title{color:var(--sidebarbackground) !important;font-family:"Noto Sans",sans-serif;font-style: normal; font-weight: normal;}
+p{font-family: "Noto Sans",sans-serif ! important}
+#toc.toc2 a:link{color:white;}
+
+a {
+  text-decoration: none;
+  color: var(--linkcolor);
+}
+a:hover {
+  color: var(--sidebarbackground);
+}
+.quoteblock blockquote::before {
+  color: var(--linkcolor);
+}
+mark {
+  color: var(--white);
+  background-color: var(--linkcolor);
+}
+
+/* Card styling */
+.sect1{border-bottom:1px solid grey;border-radius:8px;}
+
+/* Table styles */
+th{background-color: var(--linkcolor);color:#FFFFFF;}
+
+#toc.toc2{background-color:var(--sidebarbackground);color:white !important;}
+#toc.toc2.a{color:var(--white);}
+#toc.toc2.a:active{color:var(--white) !important;}
+#toc.toc2.a:visited{color:var(--white) !important;}
+#toctitle{color:white;font-size: 16px;}
+
+/* Responsiveness fixes */
+video {
+  max-width: 100%;
+}
+
+@media all and (max-width: 600px) {
+table {
+  width: 55vw!important;
+  font-size: 3vw;
+}
+
+</style>
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>Vim quick reference</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_super_tips">Super tips</a></li>
+<li><a href="#_start_vim_with_a_session">Start Vim with a session</a></li>
+<li><a href="#_directories">Directories</a></li>
+<li><a href="#_vim_initialization">Vim initialization</a></li>
+<li><a href="#_start_vim_and_then_load_a_session_file">Start Vim and then load a Session file:</a></li>
+<li><a href="#_redirect_the_vimrc_file_to_another_location_under_git_control">Redirect the vimrc file to another location under Git control</a></li>
+<li><a href="#_start_vim_with_a_different_vimrc_file">Start Vim with a different vimrc file:</a></li>
+<li><a href="#_opening_existing_files">Opening existing files</a></li>
+<li><a href="#_open_a_new_buffer_for_editing">Open a new buffer for editing</a></li>
+<li><a href="#_buffers_list">Buffers list</a></li>
+<li><a href="#_switch_between_buffers">Switch between buffers</a></li>
+<li><a href="#_find_files">Find files</a></li>
+<li><a href="#_close_files">Close files</a></li>
+<li><a href="#_screen_elements">Screen elements</a></li>
+<li><a href="#_navigate">Navigate</a>
+<ul class="sectlevel2">
+<li><a href="#_jump_within_lines">Jump within lines</a></li>
+<li><a href="#_jump_within_a_screen">Jump within a screen</a></li>
+<li><a href="#_jump_to_positions_off_the_screen">Jump to positions off the screen</a></li>
+<li><a href="#_navigate_files">Navigate files</a></li>
+<li><a href="#_navigate_screen_position">Navigate screen position</a></li>
+<li><a href="#_scroll_document">Scroll document</a></li>
+</ul>
+</li>
+<li><a href="#_editing">Editing</a>
+<ul class="sectlevel2">
+<li><a href="#_operators">Operators</a></li>
+<li><a href="#_text_objects">Text objects</a></li>
+<li><a href="#_text_object_modifiers">Text object modifiers</a></li>
+<li><a href="#_motions">Motions</a></li>
+<li><a href="#_other_editing_actions">Other editing actions</a></li>
+</ul>
+</li>
+<li><a href="#_wrap_lines">Wrap lines</a></li>
+<li><a href="#_resize_text">Resize text</a></li>
+<li><a href="#_mapped_function_keys">Mapped function keys</a></li>
+<li><a href="#_spell_check">Spell check</a></li>
+<li><a href="#_automatic_spelling_correction_with_abbreviations">Automatic spelling correction with abbreviations</a></li>
+<li><a href="#_switch_characters">Switch characters</a></li>
+<li><a href="#_open_a_calendar">Open a calendar</a></li>
+<li><a href="#_miscellaneous">Miscellaneous</a></li>
+<li><a href="#_rename_a_file_using_dos_command">Rename a file using DOS command</a></li>
+<li><a href="#_run_a_macro">Run a macro</a></li>
+<li><a href="#_change_current_working_directory">Change current working directory</a></li>
+<li><a href="#_open_a_tab">Open a tab</a></li>
+<li><a href="#_substitute_in_one_file">Substitute in one file</a></li>
+<li><a href="#_substitute_across_files_with_arglist">Substitute across files with arglist</a></li>
+<li><a href="#_change_the_colorscheme">Change the colorscheme</a></li>
+<li><a href="#_navigate_the_quickfix_list">Navigate the quickfix list</a></li>
+<li><a href="#_preview_window">Preview window</a></li>
+<li><a href="#_xterm_colors_for_vimrc">Xterm colors for vimrc</a></li>
+<li><a href="#_change_the_font">Change the font</a></li>
+<li><a href="#_insert_completion">Insert completion</a>
+<ul class="sectlevel2">
+<li><a href="#_built_in_keyword_completion">Built-in keyword completion</a></li>
+<li><a href="#_filename_completion">Filename completion</a></li>
+<li><a href="#_omni_completion">Omni completion</a></li>
+<li><a href="#_autocomplpop_plugin">AutoComplPop plugin</a></li>
+<li><a href="#_optimizing_completion_for_xml_in_a_cms">Optimizing completion for XML in a CMS</a></li>
+</ul>
+</li>
+<li><a href="#_defining_what_a_word_is">Defining what a word is</a></li>
+<li><a href="#_global_patterns">Global patterns</a></li>
+<li><a href="#_collect_lines_matching_a_pattern">Collect lines matching a pattern</a></li>
+<li><a href="#_format_html">Format HTML</a></li>
+<li><a href="#_format_css">Format CSS</a></li>
+<li><a href="#_format_xml">Format XML</a></li>
+<li><a href="#lintingcss">Lint CSS</a></li>
+<li><a href="#_lint_xml">Lint XML</a></li>
+<li><a href="#_linting_html">Linting HTML</a></li>
+<li><a href="#_use_git_from_within_vim">Use Git from within Vim</a></li>
+<li><a href="#_diff_two_buffers">Diff two buffers</a></li>
+<li><a href="#_marks">Marks</a></li>
+<li><a href="#_screen_arrangements">Screen arrangements</a></li>
+<li><a href="#_print_a_buffer">Print a buffer</a></li>
+<li><a href="#_lists">Lists</a></li>
+<li><a href="#_jumps">Jumps</a></li>
+<li><a href="#_changes">Changes</a></li>
+<li><a href="#_find">Find</a></li>
+<li><a href="#_run_a_vimscript">Run a vimscript</a></li>
+<li><a href="#_registers">Registers</a></li>
+<li><a href="#_copying_and_pasting_text_to_the_commandline">Copying and pasting text to the commandline</a></li>
+<li><a href="#_autocomplete_path_in_commandline">Autocomplete path in commandline</a></li>
+<li><a href="#_generate_a_pdf_file_from_an_asciidoc_file">Generate a PDF file from an Asciidoc file</a></li>
+<li><a href="#_code_folding">Code folding</a></li>
+<li><a href="#_copy_filepath">Copy filepath</a></li>
+<li><a href="#_pattern_search">Pattern search</a></li>
+<li><a href="#_regular_expressions">Regular expressions</a></li>
+<li><a href="#_vimgrep_to_list_lines_that_match_a_pattern">vimgrep to list lines that match a pattern</a></li>
+<li><a href="#_editing_files_in_zip_files">Editing files in ZIP files</a></li>
+<li><a href="#_sessions">Sessions</a></li>
+<li><a href="#_using_the_arglist">Using the arglist</a></li>
+<li><a href="#_calculations">Calculations</a></li>
+<li><a href="#_digraphs">Digraphs</a>
+<ul class="sectlevel2">
+<li><a href="#_entry_with_digraphs">Entry with Digraphs</a></li>
+<li><a href="#_direct_entry_of_the_unicode_code">Direct entry of the Unicode code</a></li>
+</ul>
+</li>
+<li><a href="#writing-xml">Writing XML</a></li>
+<li><a href="#_formatting_columns">Formatting columns</a>
+<ul class="sectlevel2">
+<li><a href="#_method_1_when_the_text_of_each_column_is_equal_in_width">Method 1 - when the text of each column is equal in width</a></li>
+<li><a href="#_method_2_when_the_text_of_each_column_is_unequal_in_width">Method 2 - when the text of each column is <strong>un</strong>equal in width</a></li>
+<li><a href="#_method_3">Method 3</a></li>
+</ul>
+</li>
+<li><a href="#_vim_help">Vim Help</a></li>
+<li><a href="#_to_do_next">To do next</a></li>
+<li><a href="#_best_cheatsheets">Best cheatsheets:</a></li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_super_tips">Super tips</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>q: or :ctrl-f - editable list of recent commands, select a command and press ENTER to issue</p>
+</li>
+<li>
+<p>helpgrep {word} - search the help</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_start_vim_with_a_session">Start Vim with a session</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre>gvim -S ~/documents/repos/notes/Session.vim (for p53 computer)
+gvim -S **/notes/session.vim</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Default Windows behavior is for filepaths/filenames to be case insensitive.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Applications often have their own equivalents.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_directories">Directories</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>$HOME - the user directory
+:echo $HOME</p>
+</div>
+<div class="paragraph">
+<p>$MYVIMRC - location of the vimrc file used on initialization
+:echo $MYVIMRC
+:echo $VIMRUNTIME</p>
+</div>
+<div class="paragraph">
+<p>$VIM - location of the Vim system directory
+:echo $VIM</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vim_initialization">Vim initialization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The files are searched in the following order and only the first one that is found is read.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>$HOME/_vimrc</p>
+</li>
+<li>
+<p>$HOME/vimfiles/vimrc</p>
+</li>
+<li>
+<p>$VIM/_vimrc</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Following the recommendation in the Help file, I have put my vimrc in $HOME/vimfiles.
+That file contains the following text to redirects to repos/vimrc/vimrc:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>source $HOME\Documents\repos\vimrc\vimrc</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, the system vimrc file is read for initializations.
+The path of this file is shown with the ":version" command and is usually "$VIM/vimrc".
+On my P53 computer this is: C:\Program Files (x86)\Vim\_vimrc</p>
+</div>
+<div class="paragraph">
+<p>Then the plugin scripts are loaded.
+All directories in the 'runtimepath' option are searched for the "plugin" sub-directory.
+All files ending in ".vim" are sourced (in alphabetical order per directory).</p>
+</div>
+<div class="paragraph">
+<p>My plugins plugged folder is here: C:\Users\echo\vimfiles\plugged</p>
+</div>
+<div class="paragraph">
+<p>$HOME\vimfiles\plugged</p>
+</div>
+<div class="paragraph">
+<p>This folder is explicitly called from the vimrc file with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>call plug#begin('$HOME/vimfiles/plugged')</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the plugins are loaded, the GUI initializations are performed.</p>
+</div>
+<div class="paragraph">
+<p>Then the viminfo file is read.</p>
+</div>
+<div class="paragraph">
+<p>Then windows are opened.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_start_vim_and_then_load_a_session_file">Start Vim and then load a Session file:</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Winkey gvim (pwd is ~/echo/documents/repos/)</p>
+</li>
+<li>
+<p>so notes/Session.vim</p>
+</li>
+<li>
+<p>so **/notes/session.vim</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The path is relative to the pwd if there is no file loaded and to the current buffer location if there is one loaded.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_redirect_the_vimrc_file_to_another_location_under_git_control">Redirect the vimrc file to another location under Git control</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In _vimrc located in $MYVIMRC, add this one line:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_start_vim_with_a_different_vimrc_file">Start Vim with a different vimrc file:</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>gvim</p>
+</li>
+<li>
+<p>so vimrc-config/vimrc-basic</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The path is relative to the pwd if there is no file loaded and to the current buffer location if there is one loaded.</p>
+</div>
+<div class="paragraph">
+<p>You can also open a different vimrc file and then source it with :so %</p>
+</div>
+<div class="paragraph">
+<p>When you start gvim from Windows Run, it looks in the C: drive as the root path.
+Therefore, to pass a filename, you have to add the path from C:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_opening_existing_files">Opening existing files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Navigate to the project directory.
+Set it as the current working directory.
+Then&#8230;&#8203;</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:sf [file] - splits the current window and opens the file with a path relative to the current buffer.</p>
+</li>
+<li>
+<p>:vert sf [file] - vertically splits the current window and opens the file with a path relative to the current buffer.</p>
+</li>
+<li>
+<p>:tabf [file] - open a file with the path relative to the current buffer in a new tab.</p>
+</li>
+<li>
+<p>:tabe [file] - open file with the path relative to the present working directory in a new tab.</p>
+</li>
+<li>
+<p>:vert sb start typing filename and &lt;TAB&gt; - split the current window vertically and open the named buffer</p>
+</li>
+<li>
+<p>ctrl-w r - switch the contents of two buffer windows</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_open_a_new_buffer_for_editing">Open a new buffer for editing</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:e: - reload the current file so changes made to the vimrc are enacted for the file</p>
+</li>
+<li>
+<p>:enew - hide the buffer in the current window and replace it with a new empty buffer</p>
+</li>
+<li>
+<p>:enew! - hide the buffer in the current window, deleting any unsaved changes, and replace it with a new empty buffer</p>
+</li>
+<li>
+<p>:new - split the current window horizontally and open a new empty buffer</p>
+</li>
+<li>
+<p>:vert new - split the current window vertically and open a new empty buffer</p>
+</li>
+<li>
+<p>:badd - open a buffer without viewing it in the window so you can do an xref or conref to the file using autocomplete</p>
+</li>
+<li>
+<p>:ball - open all loaded buffers in their own horizontal window</p>
+</li>
+<li>
+<p>:vert ball - open all loaded buffers in their own vertical window</p>
+</li>
+<li>
+<p>:view &lt;filename&gt; - open the buffer as read-only</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_buffers_list">Buffers list</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:sb &lt;TAB&gt; - Shows list of buffers in the folder you can autocomplete
+:buffers - shows list of buffers
+:ls - shows list of buffers
+:Buffers - fzf plugin shows list of buffers in friendlier format with preview</p>
+</li>
+<li>
+<p>%	- the buffer in the current window</p>
+</li>
+<li>
+<p>#	- the alternate buffer viewed with :b#</p>
+</li>
+<li>
+<p>a	- an active buffer: it is loaded and visible</p>
+</li>
+<li>
+<p>h	- a hidden buffer: It is loaded, but currently not displayed in a window |hidden-buffer|</p>
+</li>
+<li>
+<p>-	- a buffer with 'modifiable' off</p>
+</li>
+<li>
+<p>=	- a read-only buffer</p>
+</li>
+<li>
+<p>+	- a modified buffer</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switch_between_buffers">Switch between buffers</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>[b = switch to the next buffer in the rotation</p>
+</li>
+<li>
+<p>]b = switch to the previous buffer in the rotation</p>
+</li>
+<li>
+<p>:bn = switch to the next buffer in the rotation</p>
+</li>
+<li>
+<p>:ls = list the open buffers</p>
+</li>
+<li>
+<p>:b12 = switch to buffer number 12</p>
+</li>
+<li>
+<p>:b &lt;start typing buffer name&gt;</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>With tpope/vim-unimpaired:</p>
+</div>
+<div class="paragraph">
+<p>]a - next buffer
+[b - previous buffer</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_find_files">Find files</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>&lt;leader&gt;f - use fzf fuzzy finder</p>
+</li>
+<li>
+<p>:edit &lt;filepath&gt;/&lt;filename&gt; - searches relative to the present working directory and opens the file; Do not need to have a buffer open.</p>
+</li>
+<li>
+<p>:edit **/&lt;filename&gt;&lt;TAB&gt; - searches for files in the present working directory and its subdirectories; Do not need to have a buffer open.</p>
+</li>
+<li>
+<p>:find &lt;filepath&gt;/&lt;filename&gt; - searches relative to the directory of the current buffer (because 'set path=.') Must have a buffer open to do this.</p>
+</li>
+<li>
+<p>:find **/&lt;filename&gt;&lt;TAB&gt; - searches for files in the directory of the current buffer and its subdirectories Must have a buffer open to do this.</p>
+</li>
+<li>
+<p>:e # - Toggle between current and previous file</p>
+</li>
+<li>
+<p>ctrl-^ - Toggle between current and previous file</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_close_files">Close files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Vim will quit when you:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Delete the last buffer</p>
+</li>
+<li>
+<p>Close the last window</p>
+</li>
+<li>
+<p>Close the last tab</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Buffers</div>
+<ul>
+<li>
+<p>:w - write (save the buffer to disk)</p>
+</li>
+<li>
+<p>:bd - close the active buffer, prompting you if there are unwritten changes</p>
+</li>
+<li>
+<p>:bd! - close the active buffer and delete unwritten changes</p>
+</li>
+<li>
+<p>:e! - overwrite the open buffer with what is saved on the drive</p>
+</li>
+<li>
+<p>:10,25bd - close buffers 10-25</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Windows</div>
+<ul>
+<li>
+<p>:clo {count} - close the window without deleting the active buffer. Will not close the last window i.e. the application.</p>
+</li>
+<li>
+<p>:q - close the window without deleting the active buffer. Will close the last window i.e. The application but prompts you if there are unsaved buffers.</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Tabs</div>
+<ul>
+<li>
+<p>:tabcl[ose] - close the tab</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Application</div>
+<ul>
+<li>
+<p>:q - close the window without deleting the active buffer. Will close the last window i.e. The application but prompts you if there are unsaved buffers.</p>
+</li>
+<li>
+<p>:wq - write the buffer and close the window, ending the session if it is the last buffer.</p>
+</li>
+<li>
+<p>:qa - close all windows. Will also close the last window i.e. The application but prompts you if there are unsaved buffers.</p>
+</li>
+<li>
+<p>:qa! - close all windows. Will also close the last window i.e. The application and  including the last one  (</p>
+</li>
+<li>
+<p>:%bd - same as :qa</p>
+</li>
+<li>
+<p>:q! - force quit (close the window and if there are unsaved changes in the active buffer, don&#8217;t prompt you and don&#8217;t save them. Therefor the application without saving unsaved changes to any buffers)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_screen_elements">Screen elements</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>buffer - in-memory representation of a file that may not actually be saved as a file yet</p>
+</li>
+<li>
+<p>window - a view into a buffer</p>
+</li>
+<li>
+<p>tab - a workspace that contains one or more windows with different window layouts</p>
+</li>
+<li>
+<p>tabline - the line at the top that contains tabs</p>
+</li>
+<li>
+<p>quickfix window - displays the quickfix list</p>
+</li>
+<li>
+<p>commandline - bottom area that allows you to send commands to Vim</p>
+</li>
+<li>
+<p>commandline window - displays an editable list of the previous commands</p>
+</li>
+<li>
+<p>statusline - shows information about the buffer</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In other programs, a tab is a proxy for a document.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_navigate">Navigate</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_jump_within_lines">Jump within lines</h3>
+<div class="paragraph">
+<p>f,t,F,T - using quick-scope plugin</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jump_within_a_screen">Jump within a screen</h3>
+<div class="paragraph">
+<p>Look at where you want to put the cursor and note the nearest two characters.</p>
+</div>
+<div class="paragraph">
+<p>&lt;leader&gt;q first-letter second-letter (using vim-sneak plugin)</p>
+</div>
+<div class="paragraph">
+<p>At each instance of those two characters, a code character appears in the text.
+Type the character.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jump_to_positions_off_the_screen">Jump to positions off the screen</h3>
+<div class="paragraph">
+<p>:n - move by line
+/, ? - search
+90% - jumps to the 90% line number</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_navigate_files">Navigate files</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>gf - goto filename</p>
+</li>
+<li>
+<p>^ - jump back to previous file after gf</p>
+</li>
+<li>
+<p>Ctrl-w f - open the file in a new window</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To make it work, you may need to change the path setting or change how you write the file.
+Instead of <code>tasks.adoc</code> you may need to write <code>./admin/notes/tasks.adoc</code>.
+Or the current working directory may need to be the directory that the current buffer is in.
+Or, you may need to change the scope of the 'path' setting.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_navigate_screen_position">Navigate screen position</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>H - The document remains in place and the current line jumps to the line number at the top of the window.</p>
+</li>
+<li>
+<p>M - The document remains in place and the current line jumps to the line number at the middle of the window.</p>
+</li>
+<li>
+<p>L - The document remains in place and the current line jumps to the line number at the bottom of the window.</p>
+</li>
+<li>
+<p>+ - move cursor to start of next line without adding a new line</p>
+</li>
+<li>
+<p>- - move cursor to start of previous line without adding a new line</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scroll_document">Scroll document</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>ctrl-e - scroll downward in the document</p>
+</li>
+<li>
+<p>ctrl-y - scroll upward in the document</p>
+</li>
+<li>
+<p>zt - The cursor stays on the current line and the document scrolls so the line is now at the top of the window.</p>
+</li>
+<li>
+<p>zz - The cursor stays on the current line and the document scrolls so the line is now in the middle of the window.</p>
+</li>
+<li>
+<p>zb - The cursor stays on the current line and the document scrolls so the current line is now at the bottom of the window.</p>
+</li>
+<li>
+<p>z&lt;ENTER&gt; - same as zt</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_editing">Editing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Editing command structure:
+&lt;number&gt;&lt;operator&gt;&lt;([modifier]text object) or motion&gt;</p>
+</div>
+<div class="paragraph">
+<p>Motion commands operate from the current cursor position.
+Text object commands operate on the whole object regardless of cursor position.
+Use text object commands for editing whenever possible for greater efficiency.</p>
+</div>
+<div class="sect2">
+<h3 id="_operators">Operators</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>y</p>
+</li>
+<li>
+<p>c</p>
+</li>
+<li>
+<p>d</p>
+</li>
+<li>
+<p>&gt; - indent right</p>
+</li>
+<li>
+<p>&lt; - indent left</p>
+</li>
+<li>
+<p>= - autoindent</p>
+</li>
+<li>
+<p>gU - make uppercase</p>
+</li>
+<li>
+<p>gu - make lowercase</p>
+</li>
+<li>
+<p>g~ - swap case</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_text_objects">Text objects</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_text_object_modifiers">Text object modifiers</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>i - inner</p>
+</li>
+<li>
+<p>a - around</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_plaintext_text_objects">Plaintext text objects</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>w - a word</p>
+</li>
+<li>
+<p>s - a sentence</p>
+</li>
+<li>
+<p>p - a paragraph</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_programming_language_text_objects">Programming language text objects</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>"</p>
+</li>
+<li>
+<p>'</p>
+</li>
+<li>
+<p>`</p>
+</li>
+<li>
+<p>)</p>
+</li>
+<li>
+<p>]</p>
+</li>
+<li>
+<p>}</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_enhancements_with_wellletargets_vim">Enhancements with wellle/targets.vim</h4>
+<div class="paragraph">
+<p>Overrides Vim defaults to allow seeking to the next pair of target objects so you don&#8217;t have to be inside the object.
+Also, adds the following separators:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>, . ; : + - = ~ _ * # / | \ &amp; $</p>
+</li>
+<li>
+<p>&gt;</p>
+</li>
+<li>
+<p>&lt;</p>
+</li>
+<li>
+<p>t (tab)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>And adds the following modifiers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>in( - inside the next set of parentheses</p>
+</li>
+<li>
+<p>il( - inside the previous set of parentheses</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_markup_language_text_objects">Markup language text objects</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>t</p>
+</li>
+<li>
+<p>&gt;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_motions">Motions</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>+ - move cursor to the first character of the next line</p>
+</li>
+<li>
+<p>- - move cursor to the first character of the previous line</p>
+</li>
+<li>
+<p>w - move cursor to start of next word</p>
+</li>
+<li>
+<p>W - move cursor to start of next WORD</p>
+</li>
+<li>
+<p>e - move cursor to end of next word</p>
+</li>
+<li>
+<p>b - move cursor to start of previous word</p>
+</li>
+<li>
+<p>ge - move cursor to end of previous word</p>
+</li>
+<li>
+<p>) - move cursor to start of next sentence</p>
+</li>
+<li>
+<p>} - move cursor to start of next paragraph</p>
+</li>
+<li>
+<p>[[ - move cursor to start of next section</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_other_editing_actions">Other editing actions</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>ctrl-w - Corrects typing error by deleting the previous word when in Insert mode.</p>
+</li>
+<li>
+<p>s - Delete character and enter Insert mode</p>
+</li>
+<li>
+<p>:%y - yank the entire file</p>
+</li>
+<li>
+<p>d/pattern - delete from the cursor forward to the start of the pattern</p>
+</li>
+<li>
+<p>d/pattern/e - delete from the cursor forward to the end of the pattern</p>
+</li>
+<li>
+<p>c/pattern - change from the cursor forward to the start of the pattern</p>
+</li>
+<li>
+<p>c/pattern/e - change from the cursor forward to the end of the pattern</p>
+</li>
+<li>
+<p>:m+10 - move the current line 10 lines down</p>
+</li>
+<li>
+<p>:.,+10m100 - move the range from the current line plus the next ten to line 100</p>
+</li>
+<li>
+<p>:.,+10m&#8217;a - move the range from the current line plus the next ten to the line with marker 'a'</p>
+</li>
+<li>
+<p>S or cc - deletes the entire line and enter insert mode to substitute text - very useful for deleting the next number of lines, such as 5S. Contrast with typing d5j that keeps in Normal mode.</p>
+</li>
+<li>
+<p>ea - append text to the end of the word</p>
+</li>
+<li>
+<p>2s - substitute the next three characters in a word (useful when cw changes too many and r only replaces one) for example change Hoggit to Hobbit</p>
+</li>
+<li>
+<p>20i- &lt;Esc&gt; - insert 20 hyphens</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_wrap_lines">Wrap lines</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:set wrap linebreak - soft wrap lines</p>
+</li>
+<li>
+<p>:set nowrap nolinebreak - don&#8217;t soft-wrap lines</p>
+</li>
+<li>
+<p>:set wrap - turns on soft wrap</p>
+</li>
+<li>
+<p>:set linebreak - forces the soft wrapping at word boundaries instead of inside words</p>
+</li>
+<li>
+<p>:set tw=0 - stops automatic hard wrapping at a column</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resize_text">Resize text</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Hold down and do not release the spacebar.</p>
+</li>
+<li>
+<p>Either:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>To make smaller: Press and release the equals key (=), brief pause, then <strong>quickly</strong> press the minus key (-) one or more times as needed.</p>
+</li>
+<li>
+<p>To make larger: Press and release the equals key (=), brief pause, then <strong>quickly</strong> press the equals key (=) again one or more times as needed.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Release the spacebar.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Alternatively:</p>
+</div>
+<div class="paragraph">
+<p>:set guifont=*</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mapped_function_keys">Mapped function keys</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>F1 = Opens the Vim help</p>
+</li>
+<li>
+<p>F2 = Toggles show/hide whitespace characters defined in listchars setting</p>
+</li>
+<li>
+<p>F3 = Remove trailing whitespace</p>
+</li>
+<li>
+<p>F4 = After a :g/pattern command, F3 copies the result to a new buffer</p>
+</li>
+<li>
+<p>F5 = Paste the date</p>
+</li>
+<li>
+<p>F6 = Paste the date and time</p>
+</li>
+<li>
+<p>F7 = Toggles spell check based on the spell file specified in the vimrc</p>
+</li>
+<li>
+<p>F8 = Toggles relative/standard line numbering</p>
+</li>
+<li>
+<p>F9 =</p>
+</li>
+<li>
+<p>F10 = Zoom vsplit window</p>
+</li>
+<li>
+<p>F11 = Unzoom vsplit window</p>
+</li>
+<li>
+<p>F12 = Implements ALEFix</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spell_check">Spell check</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>]s - go to next error
+[s - go to previous error</p>
+</div>
+<div class="paragraph">
+<p>:SpellCheck - List spelling errors in quickfix list using plugin</p>
+</div>
+<div class="paragraph">
+<p>zg - add word under cursor to dictionary.
+zug - remove word under cursor to dictionary.
+z= - get suggestion for misspelled word and select number to fix</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_automatic_spelling_correction_with_abbreviations">Automatic spelling correction with abbreviations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use the vim-abolish/vim-correction plugins.
+These use the abbreviations list to make the correction.</p>
+</div>
+<div class="paragraph">
+<p>When you finish typing the incorrect word and hit the spacebar, it will automatically fix it.
+Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>wroking</p>
+</li>
+<li>
+<p>teh</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To see a list of words:
+:abbrev</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_switch_characters">Switch characters</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>&lt;leader&gt;c - character switch hobbit</p>
+</li>
+<li>
+<p>&lt;leader&gt;w - switch words</p>
+</li>
+<li>
+<p>&lt;leader&gt; right/left ENTER - :h move word one place</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_open_a_calendar">Open a calendar</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:Calendar -view=month</p>
+</li>
+<li>
+<p>:Calendar -view=year</p>
+</li>
+<li>
+<p>:Calendar -view=year -split=vertical -width=27</p>
+</li>
+<li>
+<p>:IndentLinesToggle to remove vertical indent lines as F9 does not work in this plugin.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Switch between views with &lt; and &gt; keys.</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_miscellaneous">Miscellaneous</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>@: - repeat the last commandline command, followed by @@ for additional repeats</p>
+</li>
+<li>
+<p>ctrl-c - Abort insert mode and abandon changes</p>
+</li>
+<li>
+<p><a href="https://vimhelp.org/" class="bare">https://vimhelp.org/</a> - official help</p>
+</li>
+<li>
+<p>:vert h:&lt;topic&gt; - Open the Help in a vertical split</p>
+</li>
+<li>
+<p>:tab h&lt;topic&gt; - Open the Help in a tab to make it easier to read</p>
+</li>
+<li>
+<p>:set scb to scroll two vertical splits together</p>
+</li>
+<li>
+<p>:set noscb to stop scrolling two vertical splits together</p>
+</li>
+<li>
+<p>:r file1 - paste the contents of file1 at the current cursor position - great for templates</p>
+</li>
+<li>
+<p>:%s/$^\n// - removing blank lines</p>
+</li>
+<li>
+<p>:%s/$^\n\n// - removing two blank lines</p>
+</li>
+<li>
+<p>:%s/$^\n\n/\r/ - replacing two blank lines with one blank line</p>
+</li>
+<li>
+<p>:set all - show all options. ! puts each on its own line, including plugins being used</p>
+</li>
+<li>
+<p>:set[!] - show all options that differ from their default value. ! puts each on its own line.</p>
+</li>
+<li>
+<p>:set &lt;option&gt;? - show the value of the option</p>
+</li>
+<li>
+<p>:set &lt;option&gt;=10</p>
+</li>
+<li>
+<p>:[range]ce[nter] [column width] - center the lines</p>
+</li>
+<li>
+<p>:[range]sort - sorts alphabetically</p>
+</li>
+<li>
+<p>g ctrl-g - puts a word count in the statusline</p>
+</li>
+<li>
+<p>ctrl-l - redraw the screen</p>
+</li>
+<li>
+<p>dw - delete the whitespace in front of the cursor up to the next word.</p>
+</li>
+<li>
+<p>gi - switch to Insert mode and return to the last edit</p>
+</li>
+<li>
+<p>ga - show the character code for the character under the cursor (decimal, hexadecimal, octal, digraph)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rename_a_file_using_dos_command">Rename a file using DOS command</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>:!rename % file2
+:!rename file1 file2</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_a_macro">Run a macro</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>qN - start a macro recording and store in N</p>
+</li>
+<li>
+<p>q - stop macro recording</p>
+</li>
+<li>
+<p>@N - play back macro stored in N</p>
+</li>
+<li>
+<p>@@@ - repeat the previously played macro</p>
+</li>
+<li>
+<p>10@N - play back the macro stored in N 10 times</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>qaq to empty register a before storing a macro in register a.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_change_current_working_directory">Change current working directory</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:cd &lt;relative path&gt; - change current working directory for the session</p>
+</li>
+<li>
+<p>:lcd &lt;relative path&gt; - change current working directory for the window</p>
+</li>
+<li>
+<p>:tcd &lt;relative path&gt; - change current working directory for the tab</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_open_a_tab">Open a tab</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>&lt;leader&gt;a</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_substitute_in_one_file">Substitute in one file</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:%s/find/replace/gc</p>
+</li>
+<li>
+<p>:3,45s/find/replace/gc</p>
+</li>
+<li>
+<p>% = global in the document (not just the line - as it is a line editor)</p>
+</li>
+<li>
+<p>s = substitute</p>
+</li>
+<li>
+<p>g = global in the line (so it will find multiple instances on a line)</p>
+</li>
+<li>
+<p>c = ask for confirmation before making each substitution</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Does not create a quicklist that you can view.
+It just makes the changes in the file.</p>
+</div>
+<div class="paragraph">
+<p>You can also use " or | for the pattern delimiter instead of /.
+This avoids having to escape the / in filepaths.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_substitute_across_files_with_arglist">Substitute across files with arglist</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:args <strong>*/</strong>.filetype</p>
+</li>
+<li>
+<p>:args (to verify the list)</p>
+</li>
+<li>
+<p>:argdo %s/word/replace/g</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_change_the_colorscheme">Change the colorscheme</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:colorscheme &lt;Enter&gt; = names the current colorscheme</p>
+</li>
+<li>
+<p>:colorscheme &lt;name&gt; &lt;Enter&gt; = switches to the colorscheme</p>
+</li>
+<li>
+<p>:colorscheme &lt;start typing the name&gt; &lt;TAB&gt; = autocomplete</p>
+</li>
+<li>
+<p>:colorscheme &lt;tab&gt; = rotate through available colorschemes</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+I modified vimfiles/colors/gruvbox.vim to make the headings red and saved it to my vim-config folder.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The color of the folds is set in the vimrc with:
+highlight Folded guifg=goldenrod2</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_navigate_the_quickfix_list">Navigate the quickfix list</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>:help vim-qf</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>cn - next</p>
+</li>
+<li>
+<p>cp - previously</p>
+</li>
+<li>
+<p>cf - first</p>
+</li>
+<li>
+<p>cl - last</p>
+</li>
+<li>
+<p>ccn - go to number n</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>With tpope vim-unimpaired</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>]q - next</p>
+</li>
+<li>
+<p>[q - previous</p>
+</li>
+<li>
+<p>[Q - first</p>
+</li>
+<li>
+<p>]Q - last</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To view older or newer quickfix lists:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:colder</p>
+</li>
+<li>
+<p>:cnewer</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can operate on the quickfix list:</p>
+</div>
+<div class="paragraph">
+<p>:cdo s/foo/bar/ | update
+:cfdo - close any buffers that open</p>
+</div>
+<div class="paragraph">
+<p>romainl/vim-qf plugin enhances behavior, such as opening the quickfix window automatically after a vimgrep, switching to absolute numbering, etc.</p>
+</div>
+<div class="paragraph">
+<p>To filter the list:</p>
+</div>
+<div class="paragraph">
+<p>:Keep {word}
+:Reject {word}
+:Restore</p>
+</div>
+<div class="paragraph">
+<p>bfrg/vim-qf-preview plugin allows a preview of the item in the quickfix list:
+To use this, first select the quickfix window (otherwise the 'p' keystroke will paste the contents of the default register.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>p (with the cursor in the quickfix list) - open preview</p>
+</li>
+<li>
+<p>ctrl-k, ctrl-j - Scroll up/down one text line in the preview</p>
+</li>
+<li>
+<p>Shift-Home, Shift-End - Scroll to first/last line of displayed buffer in the preview</p>
+</li>
+<li>
+<p>r - Scroll back to error line corresponding to the quickfix list item ("reset")</p>
+</li>
+<li>
+<p>q, Ctrl-c - Close the popup window:</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preview_window">Preview window</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A preview window can be opened with:</p>
+</div>
+<div class="paragraph">
+<p>:ped - open preview window
+:pc - close preview window
+:psearch /pattern/ - shows found match in preview window</p>
+</div>
+<div class="paragraph">
+<p>If you want the preview window to open as a popup:</p>
+</div>
+<div class="paragraph">
+<p>:previewpopup
+:previewpopup=height:20,width:40</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_xterm_colors_for_vimrc">Xterm colors for vimrc</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://codeyarns.com/tech/2011-07-29-vim-chart-of-color-names.html" class="bare">https://codeyarns.com/tech/2011-07-29-vim-chart-of-color-names.html</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_change_the_font">Change the font</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:set guifont=Roboto_Mono:h16</p>
+</li>
+<li>
+<p>:set guifont=*</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_insert_completion">Insert completion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://vim.fandom.com/wiki/Omni_completion" class="bare">https://vim.fandom.com/wiki/Omni_completion</a></p>
+</div>
+<div class="paragraph">
+<p>Vim has many options for completion that pull words/terms/filenames from different places.</p>
+</div>
+<div class="sect2">
+<h3 id="_built_in_keyword_completion">Built-in keyword completion</h3>
+<div class="paragraph">
+<p>The basic completion is keyword completion, triggered with ctrl-n or ctrl-p.
+ctrl-n looks forward in the file for keywords and ctrl-p looks backward in the file.
+It pulls words from, all of the buffers loaded in the Vim instance and saved.
+It will not work on a buffer that has not been saved.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+If the default word insert completion is not working, it is probably because you didn&#8217;t set the present working directory to the directory with your files.
+This catches me out a lot, so don&#8217;t forget.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To activate, in insert mode, start typing the term, then use crtl-n or ctrl-p.
+If there is more than one option, a list appears.
+Use ctrl-n or ctrl-p repeatedly to cycle through the options.</p>
+</div>
+<div class="paragraph">
+<p>To simplify this, I have mapped ctrl-n to the TAB key so I can just press TAB.
+With this mapping, hit TAB and keep hitting TAB to select the option you want, then hit ENTER.</p>
+</div>
+<div class="paragraph">
+<p>You need to set where Vim will look for the completion terms with set completion,
+My current options are:</p>
+</div>
+<div class="paragraph">
+<p>set complete+=.,w,b,u,i</p>
+</div>
+<div class="paragraph">
+<p>The default is ".,w,b,u,t,i", which means to scan:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the current buffer</p>
+</li>
+<li>
+<p>buffers in other windows</p>
+</li>
+<li>
+<p>other loaded buffers</p>
+</li>
+<li>
+<p>unloaded buffers</p>
+</li>
+<li>
+<p>tags</p>
+</li>
+<li>
+<p>included files</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+You have to use the syntax +=
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_filename_completion">Filename completion</h3>
+<div class="paragraph">
+<p>Some of the other completion types are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ctrl-x ctrl-f to complete a filename (insert filename completion)</p>
+</li>
+<li>
+<p>ctrl-x ctrl-l to complete a line higher up in the file (insert line completion)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>I have mapped filename completion in the vimrc to &lt;leader&gt;&lt;Tab&gt; to reduce keystrokes.</p>
+</div>
+<div class="paragraph">
+<p>To insert-complete filenames with extensions, you need to add the . character to the definition of a word.
+To insert-complete filenames with hyphens you need to add the - character to the definition of a word.</p>
+</div>
+<div class="paragraph">
+<p>:set iskeyword+=\-
+:set iskeyword+=\.</p>
+</div>
+<div class="paragraph">
+<p>Filename completion is harder to achieve.
+An alternative is to create a text file list of filenames with:
+$dir /b &gt;dir.txt
+You can then use regular word complete to complete filenames instead of the ctrl-x ctrl-f completion.</p>
+</div>
+<div class="paragraph">
+<p>See :h ins-completion.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_omni_completion">Omni completion</h3>
+<div class="paragraph">
+<p>:help new-omni-completion</p>
+</div>
+<div class="paragraph">
+<p>For specific language file types, "omni completion" is used.
+Various programming languages are natively built into Vim, such as SQL, HTML, XML, CSS, JavaScript and PHP and will work out of the box.
+Other languages such as C and PHP will also take advantage of a tags file created with a utility like cTags.
+I won&#8217;t need cTags as I don&#8217;t use these languages.</p>
+</div>
+<div class="paragraph">
+<p>To use Omni completion, you have to add this to the vimrc to turn it on as it is not on by default.</p>
+</div>
+<div class="paragraph">
+<p>set omnifunc=syntaxcomplete#Complete</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_autocomplpop_plugin">AutoComplPop plugin</h3>
+<div class="paragraph">
+<p>To reduce keystrokes, you can use the AutoComplPop plugin to automatically popup the options lists as you type.
+This avoids having to type ctrl-n or ctrl-p or the mapped TAB key.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/othree/vim-autocomplpop/blob/master/doc/acp.txt" class="bare">https://github.com/othree/vim-autocomplpop/blob/master/doc/acp.txt</a></p>
+</div>
+<div class="paragraph">
+<p>In a text file or ascidoc file or other file type not recognized by Vim as a supported omni completion language, the plugin uses the basic ctrl-n/ctrl-p completion as indicated in the status line.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/vim-keyword-completion.png" alt="vim keyword completion" width="60%">
+</div>
+</div>
+<div class="paragraph">
+<p>In an XML file, which is a supported omni completion language, the plugin uses the omni completion type.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/vim-omni-completion.png" alt="vim omni completion" width="50%">
+</div>
+</div>
+<div class="paragraph">
+<p>To toggle this behavior:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:AcpEnable</p>
+</li>
+<li>
+<p>:AcpDisable</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To switch to filename completion, just use the mapping &lt;leader&gt;&lt;Tab&gt;.
+This is very convenient and makes this plugin a possibility for use with DITA CMS.</p>
+</div>
+<div class="paragraph">
+<p>The popup behavior can be slow.</p>
+</div>
+<div class="paragraph">
+<p>There are a few things you can do to speed it up.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Lower the timeoutlen and ttimeoutlen settings in the vimrc.</p>
+</li>
+<li>
+<p>Do not include the 'i' option and make it so that the popup doesn&#8217;t appear until you have typed three characters with the following vimrc settings:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>let g:acp_enableAtStartup = 1
+let g:acp_completeOption = '.,w,b,u'
+let g:acp_behaviorFileLength = 3
+let g:acp_behaviorXmlOmniLength = 3</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_optimizing_completion_for_xml_in_a_cms">Optimizing completion for XML in a CMS</h3>
+<div class="paragraph">
+<p>See <a href="#writing-xml">Writing XML</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_defining_what_a_word_is">Defining what a word is</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For use with Autocomplete, you can define a word to include additional characters.
+This is useful for DITA conrefs that have GUIDs, .xml filenames, and # IDs.
+It is set for only the active buffer.</p>
+</div>
+<div class="paragraph">
+<p>:set iskeyword+=\-  (a word includes hyphens, which you need to insert-complete GUIDs and filenames)
+:set iskeyword+=\.  (a word includes periods which you need to insert-complete filenames with extensions (.png, .xml))
+:set iskeyword+=\#  (a word includes # for IDs but I think it&#8217;s better to not do this)</p>
+</div>
+<div class="paragraph">
+<p>This can also be set in the vimrc.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_global_patterns">Global patterns</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>:g/pattern/d - deletes all lines that include the pattern</p>
+</div>
+<div class="paragraph">
+<p>:g/pattern/s/old/new/gc - Do a substitution in only those lines that match the pattern</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_collect_lines_matching_a_pattern">Collect lines matching a pattern</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Uses the g global command.</p>
+</div>
+<div class="paragraph">
+<p>Either:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>:g/pattern/y a - copy lines with the pattern to register a or use A to append to register A.</p>
+</li>
+<li>
+<p>:new newfile.txt</p>
+</li>
+<li>
+<p>"ap - to paste</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Or,</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>:g/pattern/</p>
+</li>
+<li>
+<p>F4</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This one uses a mapping in the vimrc.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+This is different from vimgrep.
+With vimgrep, the lines are truncated in the quickfix list so you can&#8217;t copy out the whole line.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>%g/hobbit/m$ - moves lines in the document containg the word hobbit to the end of the document</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The v command is the inVerse of g.
+Therefore:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>%g/foo/d - delete all lines in the document that contain 'foo'</p>
+</li>
+<li>
+<p>%v/foo/d - delete all lines in the document that DO NOT contain 'foo'</p>
+</li>
+<li>
+<p>%v/foo/m$ - move all lines that DO NOT contain 'foo' to the end of the document</p>
+</li>
+<li>
+<p>:v/foo/ then F3 - copy all lines that DO NOT contain foo and paste them into a new buffer</p>
+</li>
+<li>
+<p>:g/foo/j - join any line containing 'foo' to its subsequent line</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_format_html">Format HTML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The most complete strategy for cleaning up an HTML file might be to:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Filter it through pandoc (only if there is a lot of cruft in the code).</p>
+</li>
+<li>
+<p>Run Tidy to fix errors in the HTML and do some tidying.</p>
+</li>
+<li>
+<p>Run Prettier to do nice tidying.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Tidy will fix errors in HTML as well as format it although the formatting does not seem to be as nice as the formatting result of Prettier.
+To use:</p>
+</div>
+<div class="paragraph">
+<p>:tidyHTML</p>
+</div>
+<div class="paragraph">
+<p>Prettier will format HTML with the line editor command but it will not fix errors in the code.
+To use:</p>
+</div>
+<div class="paragraph">
+<p>:Prettier</p>
+</div>
+<div class="paragraph">
+<p>Prettier is NOT currently set up in the vimrc to automatically format HTML on save.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_format_css">Format CSS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Prettier is set to automatically format CSS on save using the following setting in the vimrc.</p>
+</div>
+<div class="paragraph">
+<p>let g:prettier#autoformat_require_pragma = 0</p>
+</div>
+<div class="paragraph">
+<p>See also <a href="#lintingcss">Lint CSS</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_format_xml">Format XML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>I am currently using :XMLlint.
+Tidy can also tidy up XML with :tidyXML</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="lintingcss">Lint CSS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Currently using ALE for linting.
+See the vimrc for more details.</p>
+</div>
+<div class="paragraph">
+<p>To lint CSS:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open a file.</p>
+</li>
+<li>
+<p>Place stylelintrc.json file in the directory with the file</p>
+</li>
+<li>
+<p>&lt;leader&gt;cd to set the file as the working directory</p>
+</li>
+<li>
+<p>Run :ALELint.</p>
+</li>
+<li>
+<p>:lopen to see the list of errors.</p>
+</li>
+<li>
+<p>:lclose to close the list.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lint_xml">Lint XML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To lint XML:</p>
+</div>
+<div class="paragraph">
+<p>XMLlint is set up to automatically lint files.
+Open the XML file and then open the location list :lopen.
+Any errors will be marked in the margin.</p>
+</div>
+<div class="paragraph">
+<p>To validate a DITA file per the command in the vimrc:
+command! DITAvalid %!xmllint % --valid --noout</p>
+</div>
+<div class="paragraph">
+<p>:DITAvalid</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The DITA file must be in the same folder as the DTD for the topic type eg concept.dtd.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_linting_html">Linting HTML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To lint HTML:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:Prettier</p>
+</li>
+<li>
+<p>:copen</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_use_git_from_within_vim">Use Git from within Vim</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is better to use GitHub client as this is linked to GitHub for easy push/pull without security codes and you can see the changes more easily.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:Git - gives the status</p>
+</li>
+<li>
+<p>:q - closes the window (status window or any diff window)</p>
+</li>
+<li>
+<p>:GV - browse the commits and view diffs</p>
+</li>
+<li>
+<p>:GV! - browse commits and view diffs for only the current buffer</p>
+</li>
+<li>
+<p>:Gdiff  - diffs against the last commit in a horizontal split</p>
+</li>
+<li>
+<p>:Git blame - lists commits and person responsible</p>
+</li>
+<li>
+<p>:Git push</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To allow a Git repo push to the GitHub remote or pull from it, you need to use a personal access token.
+To do this, you must clone the repo from GitHub to your local drive using the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>git clone https://mark-bez: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@github.com/mark-bez/notes.git</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_diff_two_buffers">Diff two buffers</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:windo difft - diffs two buffers in vertical splits</p>
+</li>
+<li>
+<p>Open file1, then :diffsplit file2</p>
+</li>
+<li>
+<p>Win key vdiff file1 file2</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To copy a difference from one split to the other:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>dp - put, when the cursor is on the line to copy</p>
+</li>
+<li>
+<p>do - get, when the cursor is on the line that is empty</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_marks">Marks</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>mN - mark the cursor position and store it in N</p>
+</li>
+<li>
+<p>'N - goto beginning of the line containing the mark stored in N</p>
+</li>
+<li>
+<p>`N - go to cursor position of the mark stored in N</p>
+</li>
+<li>
+<p>:marks - list all marks</p>
+</li>
+<li>
+<p>:delm N - delete mark stored in N</p>
+</li>
+<li>
+<p>:delm! - delete all marks</p>
+</li>
+<li>
+<p>:delm a-z - delete marks a-z</p>
+</li>
+<li>
+<p>:del abc - delete marks a, b, and c</p>
+</li>
+<li>
+<p>d&#8217;N - delete from the cursor to the beginning of the line containing marker N</p>
+</li>
+<li>
+<p>d`N - delete from the cursor to the line/column position of marker N</p>
+</li>
+<li>
+<p>'' - return to the line where the cursor was before the last jump  (Two single quotes)</p>
+</li>
+<li>
+<p>`` - return to the cursor position before the last jump - undoes the jump (Two back ticks)</p>
+</li>
+<li>
+<p>`^ - return to the last position of cursor in insert mode</p>
+</li>
+<li>
+<p>`. - return to the last change in current buffer</p>
+</li>
+<li>
+<p>`" - return to the last exited current buffer</p>
+</li>
+<li>
+<p>`0 - go to the file other than this one that you last edited</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Using kshenoy/vim-signature to place marks in the sign column.
+To stop showing marks in the sign column:
+:SignatureToggle
+There are also custom mappings for this plugin.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_screen_arrangements">Screen arrangements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>:only - close all other split screens except the current one
+:res +N or -N - change the height of a horizontal window by N lines
+z{height] - change the height of a horizontal window to N lines
+:vert res +N or -N - change the width of a vertical window by N columns
+ctrl-w r - swap split windows</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_print_a_buffer">Print a buffer</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>:hardcopy &gt; file.txt</p>
+</div>
+<div class="paragraph">
+<p>To print a PDF of a file, which is the only option for files other than AsciiDoc files:</p>
+</div>
+<div class="paragraph">
+<p>:hardcopy &gt; file.ps</p>
+</div>
+<div class="paragraph">
+<p>This opens a dialog to convert to a PDF via a printer such as Microsoft or Adobe.
+Preferably, select Adobe, change the settings, such as to landscape and 'paper' size.
+To print Vim diff files, the colorscheme makes a difference to the output coloring.
+So far, gruvbox with background=light works well.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_lists">Lists</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>q: or :ctrl-f - editable list of recent commands, select a command and press ENTER to issue</p>
+</li>
+<li>
+<p>:changes - shows the last 100 changes that can be undone</p>
+</li>
+<li>
+<p>:reg - shows the contents of the registers, also shown in a different format with Vim Sneak after pressing "</p>
+</li>
+<li>
+<p>:jumps - shows the history of where the cursor jumped for the current window; a jump is (1)Freely jumping around a file, such as :20, (2) Jumping based on the window size, such as M, (3) Text block jumps, such as ( and {</p>
+</li>
+<li>
+<p>:history - shows command history</p>
+</li>
+<li>
+<p>:oldfiles - default vim</p>
+</li>
+<li>
+<p>:undolist -</p>
+</li>
+<li>
+<p>:map - lists the characters that are mapped</p>
+</li>
+<li>
+<p>:bro[wse] old[files]</p>
+</li>
+<li>
+<p>:Oldfiles - uses plugin</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_jumps">Jumps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A jump is initiated by one of the following commands: '', <code>, G, /, ?, n, N, %, (, ), [[, ]], {, }, :s, :tag, L, M, H and the commands that start editing a new file.
+Basically, jumping to marks, searching, brackets, screen positions.
+The position of the cursor before the jump is remembered.
+You can return to that position with the '' and `</code> command.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:jumps</p>
+</li>
+<li>
+<p>ctrl-o - moves back to older jumps, including to a file that was just closed</p>
+</li>
+<li>
+<p>ctrl-i - moves forward in the jumplist</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_changes">Changes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Locations of edits are stored in the change list.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:changes</p>
+</li>
+<li>
+<p>g; - places cursor at the last place an edit was made without undoing the edit, repeat to go back in history</p>
+</li>
+<li>
+<p>g, - repeat to go forward in the history of edits</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_find">Find</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:find &lt;TAB&gt; to open files in the path of the <strong>current file</strong></p>
+</li>
+<li>
+<p>:sfind to open it in a split window</p>
+</li>
+<li>
+<p>:vert sfind to open it in a vertical split window</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These are different to :edit &lt;TAB&gt;, which opens files in the path of the current working directory</p>
+</div>
+<div class="paragraph">
+<p>:find uses the path defined in :set path?
+By default this is path=.,,</p>
+</div>
+<div class="paragraph">
+<p>This means search relative to the directory of the current file AND the current directory.
+This may result in too many hits and slow the search.</p>
+</div>
+<div class="paragraph">
+<p>To search only relative to the directory of the current file, use:
+:set path=.</p>
+</div>
+<div class="paragraph">
+<p>To search in the current directory only use an empty string between two commas use:
+:set path=,,</p>
+</div>
+<div class="paragraph">
+<p>What if we wanted to search downward recursively through our project?
+It is common to open your text editor in your project root ( often denoted by a vcs file such as a .git folder ).
+To ensure that Vim finds all of our project files when we search for them, we use * and <strong>.
+The asterisks represent wildcards, with * matching 0 or more characters and </strong> matching only directories.
+By setting your path to set path=.,,,**, you can ensure that Vim will search all our project files.</p>
+</div>
+<div class="paragraph">
+<p>Can use wildcards such as :find <strong>word</strong> or **/*word</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run_a_vimscript">Run a vimscript</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create the vimscript file filename.vim</p>
+</li>
+<li>
+<p>Open the file you want to run the script on.</p>
+</li>
+<li>
+<p>:source filename.vim</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_registers">Registers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Registers are global to the session.
+To see the contents of the registers:
+:reg</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The unnamed register "" - text deleted with the "d", "c", "s", "x" commands or copied with the yank "y" command</p>
+</li>
+<li>
+<p>10 numbered registers "0 to "9 -  text from yank and delete commands when <strong>at least a whole line was changed</strong></p>
+</li>
+<li>
+<p>The small delete register "- text from commands that delete less than one line, such as with dw</p>
+</li>
+<li>
+<p>26 named registers "a to "z or "A to "Z</p>
+</li>
+<li>
+<p>Three read-only registers ":, "., "% - can use them only with the "p", "P", and ":put" commands and with CTRL-R</p>
+</li>
+<li>
+<p>Alternate buffer register "#</p>
+</li>
+<li>
+<p>The expression register "=</p>
+</li>
+<li>
+<p>The selection and drop registers "*, "+ and "~</p>
+</li>
+<li>
+<p>The black hole register "_</p>
+</li>
+<li>
+<p>Last search pattern register "/</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>"&lt;register&gt;</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"ay - Copy to register a</p>
+</li>
+<li>
+<p>"ap - Paste from register a</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The default register that yank copies to is ".</p>
+</div>
+<div class="paragraph">
+<p>The previously yanked text is stored in registers 0-9.
+To paste a previous undo, first identify the register it is saved in, then "Np such as "4p</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copying_and_pasting_text_to_the_commandline">Copying and pasting text to the commandline</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This is yank followed by ctrl-r on the commandline.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Yank the string (to the default unnamed register)</p>
+</li>
+<li>
+<p>In the commandline:</p>
+<div class="listingblock">
+<div class="content">
+<pre>:&lt;Ctrl r&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This adds the " character which means it&#8217;s waiting for a register number/character.</p>
+</div>
+</li>
+<li>
+<p>Type " to paste the yanked string from the unnamed register.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This is
+:ctrl-r "</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_autocomplete_path_in_commandline">Autocomplete path in commandline</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ctrl-x ctrl-f</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generate_a_pdf_file_from_an_asciidoc_file">Generate a PDF file from an Asciidoc file</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Uses <a href="https://github.com/habamax/vim-asciidoctor" class="bare">https://github.com/habamax/vim-asciidoctor</a> plugin.</p>
+</div>
+<div class="paragraph">
+<p>In addition to asciidoctor, you must have asciidoctor-pdf, asciidoctor-diagram, and asciidoctor-rouge extensions installed for HTML and DOCX file creation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>$ gem install asciidoctor-pdf</p>
+</li>
+<li>
+<p>$ gem install asciidoctor-diagram</p>
+</li>
+<li>
+<p>$ gem install asciidoctor-rouge</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Type the following <strong>quickly</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>&lt;leader&gt;oo - open the Asciidoc file in a browser</p>
+</li>
+<li>
+<p>&lt;leader&gt;ch the &lt;ENTER&gt; - generate an HTML file</p>
+</li>
+<li>
+<p>&lt;leader&gt;oh then &lt;ENTER&gt; - open the previously generated HTML file</p>
+</li>
+<li>
+<p>&lt;leader&gt;cp then &lt;ENTER&gt; - generate a PDF file</p>
+</li>
+<li>
+<p>&lt;leader&gt;op then &lt;ENTER&gt; - open the previously generated PDF file</p>
+</li>
+<li>
+<p>&lt;leader&gt;cx then &lt;ENTER&gt; - print to .docx</p>
+</li>
+<li>
+<p>&lt;leader&gt;ox - open the previously generated .docx file</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Make sure the cursor is not on a character with &lt;leader&gt;cp or ch.
+It will otherwise clash with switching the letter.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>After generating, use :bd to close the window and return to the document.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_code_folding">Code folding</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>zo or spacebar - open a fold</p>
+</li>
+<li>
+<p>zO - open a fold and all its subfolds</p>
+</li>
+<li>
+<p>zc - close a fold</p>
+</li>
+<li>
+<p>zC - close a fold and all its subfolds</p>
+</li>
+<li>
+<p>za - toggle a fold</p>
+</li>
+<li>
+<p>zr - open a fold by one level</p>
+</li>
+<li>
+<p>zm - close a fold by one level</p>
+</li>
+<li>
+<p>zR - open all folds</p>
+</li>
+<li>
+<p>zM - close folds &lt;leader&gt;x - initiate code folding in XML files</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the cold folding doesn&#8217;t work for a section, the fold may have been deleted with zd.
+If you write and close the file then reopen it, all of the folds should be properly remade.</p>
+</div>
+<div class="paragraph">
+<p>To define the characters used for folding&#8230;&#8203;TO DO</p>
+</div>
+<div class="paragraph">
+<p>The color of the folds is set in the vimrc to look great with Gruvbox dark with:
+highlight Folded guifg=goldenrod2</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_copy_filepath">Copy filepath</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Copies to unnamed register "</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>cp - copies filename</p>
+</li>
+<li>
+<p>cP - copies filepath</p>
+</li>
+<li>
+<p>p to paste</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_pattern_search">Pattern search</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>:h Q_pa</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>           matches any single character  \.
+                  matches start of line  ^
+                          matches &lt;EOL&gt;  $
+                  matches start of word  \&lt;
+                    matches end of word  \&gt;
+   matches a single char from the range  \[a-z]
+ matches a single char not in the range  \[^a-z]
+        matches a white space character  \s
+    matches a non-white space character  \S
+                          matches &lt;Esc&gt;  \e
+                          matches &lt;Tab&gt;  \t
+                           matches &lt;CR&gt;  \r
+           group a pattern into an atom  \(\
+   matches 2 to 5 of the preceding atom  \{2,5}
+matches 0 or more of the preceding atom  \*
+matches 1 or more of the preceding atom  \+
+   matches 0 or 1 of the preceding atom  \=
+             separates two alternatives  \|</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_regular_expressions">Regular expressions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To set up a regex:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use the search to identify the expression that matches what you want (/)</p>
+</li>
+<li>
+<p>Build the substitution expression with an empty match, which defaults to the last search pattern.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="paragraph">
+<p>/pattern</p>
+</div>
+<div class="paragraph">
+<p>:%s//replacement/g</p>
+</div>
+<div class="paragraph">
+<p>You can also use ctrl-r / to paste in the previous search pattern.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vimgrep_to_list_lines_that_match_a_pattern">vimgrep to list lines that match a pattern</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:vimgrep word %</p>
+</li>
+<li>
+<p>:vimgrep "words with spaces" %</p>
+</li>
+<li>
+<p>:vimgrep /words with spaces/ %</p>
+</li>
+<li>
+<p>:vimgrep word g %</p>
+</li>
+<li>
+<p>:vimgrep word gj% %</p>
+</li>
+<li>
+<p>:copen</p>
+</li>
+<li>
+<p>g = global in the file (lists each instance on a separate quickfix line if line has multiple matches)</p>
+</li>
+<li>
+<p>j = do not automatically jump to the first match</p>
+</li>
+<li>
+<p>% = include in the listing which file you&#8217;re on (eg 2 of 5) (the first %)</p>
+</li>
+<li>
+<p>% = search the current buffer (the second %)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For location list, specific to the window, instead of the global quickfix list:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:lvimgrep word %</p>
+</li>
+<li>
+<p>:lvimgrep /words with spaces/ %</p>
+</li>
+<li>
+<p>:lopen</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>vimgrep is for searching and listing not collecting lines of text.
+It truncates the lines in the quickfix list.</p>
+</div>
+<div class="paragraph">
+<p>The default scope of the search is the working directory.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>:vimgrep word gj% *.txt</p>
+</li>
+<li>
+<p>:vimgrep /pattern/g <strong>*/</strong>.txt</p>
+</li>
+<li>
+<p>:vimgrep word g ##</p>
+</li>
+<li>
+<p>*.txt = search only in text files in the current folder</p>
+</li>
+<li>
+<p><strong>*/</strong>.txt = search in text files in the current folder and subfolders</p>
+</li>
+<li>
+<p>## = searches the set of files in the arglist</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_editing_files_in_zip_files">Editing files in ZIP files</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>vim file.zip</p>
+</li>
+<li>
+<p>Choose the file you want to edit, change what you want, and exit with :x</p>
+</li>
+<li>
+<p>If vim responds with "Cannot make changes, 'modifiable' is off", just run :set modifiable or :set ma.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sessions">Sessions</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>:mks - creates a file called Session.vim in the current working directory; you can have a different Session.vim file for every project directory
+:mks! - overwrites the default Session.vim
+:mks mysesion.vim - creates a file called mysession.vim in the current working directory or other path
+gvim -S filepath/filename.vim - opens gVim and loads the saved session
+:so filepath/filename.vim to switch to a different session</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_the_arglist">Using the arglist</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>During a working session, the buffers list becomes messy.
+An arglist can provide a stable subset of files that improves navigation.</p>
+</div>
+<div class="paragraph">
+<p>:args to list the files in the arglist
+:n to move to the next file in the list
+:first to move to the first
+:last to move to the last
+:rew same as :last
+:argadd file - add a file to the args list
+:argdel file - delete a file from the args list</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_calculations">Calculations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>From insert mode:
+ctrl-r =
+enter the calculation and press ENTER.</p>
+</div>
+<div class="paragraph">
+<p>If you have already typed the calculation into the buffer:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Yank only the expression without the equals sign into the unnamed register</p>
+</li>
+<li>
+<p>shift-a to enter insert mode at the end of the line</p>
+</li>
+<li>
+<p>&lt;ctrl-r&gt;= to enter the expression register</p>
+</li>
+<li>
+<p>&lt;ctrl-r&gt;" to paste the yanked text from the unnamed register (that is the shift key with ")
+&lt;enter&gt; to perform the calculation and insert the result</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>5*10=50</p>
+</div>
+<div class="paragraph">
+<p>5+5=10</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_digraphs">Digraphs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keyboards don&#8217;t have enough keys to show all characters that can be entered into a document.
+Additional characters are entered via codes, such as ASCII and Unicode.
+Different operating systems and application software have different ways for entering these codes.
+Not all fonts support all Unicode characters.
+Windows has the Character Map for entering these extended character codes.
+Windows also supports keysequence input of Unicode codes with Alt + nnnn(n).</p>
+</div>
+<div class="paragraph">
+<p>On Windows, to enter Unicode 2014, type <code>Alt +2014</code>.
+You must use the numpad key for typing the + and 2014.</p>
+</div>
+<div class="paragraph">
+<p>Applications often have their own equivalents built in for selecting extended characters.
+After entering the character, the application often converts the code to the 'glyph' character.
+Character glyphs can also be copied and pasted so another way to enter them is to copy the character from the internet.
+For entering extended characters in XML, you can also use &amp;#nn; (decimal form) or &Xxnn; (hexadecimal form).
+There are two ways to enter extended characters in Vim.</p>
+</div>
+<div class="sect2">
+<h3 id="_entry_with_digraphs">Entry with Digraphs</h3>
+<div class="paragraph">
+<p>Digraphs use two-character codes.
+To see the codes:</p>
+</div>
+<div class="paragraph">
+<p>:h digraph-table</p>
+</div>
+<div class="paragraph">
+<p>:h dig[raph]</p>
+</div>
+<div class="paragraph">
+<p>To enter a digraph, in insert mode:
+ctrl-k character1 character2</p>
+</div>
+<div class="paragraph">
+<p>To list digraphs:
+:dig</p>
+</div>
+<div class="paragraph">
+<p>щ
+ざ</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_direct_entry_of_the_unicode_code">Direct entry of the Unicode code</h3>
+<div class="paragraph">
+<p>In insert mode, type:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>ctrl-v</p>
+</li>
+<li>
+<p>u</p>
+</li>
+<li>
+<p>The four or five digit unicode with the regular keyboard or numpad</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>ctrl-v u2020 gives this:
+†</p>
+</div>
+<div class="paragraph">
+<p>ctrl-v u03c0 gives this:
+π</p>
+</div>
+<div class="paragraph">
+<p>To see the character code in the statusline:
+ga</p>
+</div>
+<div class="paragraph">
+<p>:help i_CTRL-V_digit</p>
+</div>
+<div class="paragraph">
+<p>For substitutions:</p>
+</div>
+<div class="paragraph">
+<p>:%s/&lt;Ctrl-v&gt;u200e//g</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="writing-xml">Writing XML</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This setup is for XML files stored in a CMS where file addressing is with GUID filenames instead of file paths and the XML files and image files are all in one folder.
+Only keywords in the file buffers will be available for omni completion for the XML language.
+Only files in the present working directory and subfolders will be available for filename completion.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Place the set of files you will be working on in their own folder.</p>
+</li>
+<li>
+<p>Open one of the XML files in a new Vim instance</p>
+</li>
+<li>
+<p>Set the present working directory to the folder the file is in.</p>
+</li>
+<li>
+<p>:badd dita-elements.txt to load the buffer but keep it hidden - has a subset of the DITA elements I may use.</p>
+</li>
+<li>
+<p>:badd &lt;warehouse files&gt; as needed to load files I might conref to as needed</p>
+</li>
+<li>
+<p>Create a text file of GUIDS (guid.txt) and :badd to load the buffer</p>
+</li>
+<li>
+<p>Ensure AutoComplPop is enabled :AcpEnable (should be on by default)</p>
+</li>
+<li>
+<p>To start a new file, :new filename_guid.xml, then &lt;leader&gt;dt or dc or dnt, or dnc to add the basic structure. Can also use enew filename to replace the currently viewed buffer in the window.</p>
+</li>
+<li>
+<p>To type the XML tags, use the xml.vim filetype plugin in combination with the mapping to automatically close XML/HTML tags in the vimrc.</p>
+</li>
+<li>
+<p>The XML file tag completion behavior uses the vimrc mapping <code>inoremap &gt;&lt;Tab&gt; &gt;&lt;Esc&gt;F&lt;lyt&gt;o&lt;/&lt;C-r&gt;"&gt;&lt;Esc&gt;O&lt;Space&gt;</code></p>
+</li>
+<li>
+<p>The omni completion popup via AcpEnable draws on the content and fielnames of the open buffers. Press &lt;ENTER&gt; to add the highlighted word and &lt;TAB&gt; to cycle through the list.</p>
+</li>
+<li>
+<p>To use filename completion, type &lt;leader&gt;&lt;TAB&gt; and completion will switch from omni completion to filename completion, drawing on the files in the present working directory.</p>
+</li>
+<li>
+<p>Automatic typo correction is enabled via vim-abolish/vim-correction plugins and the vimrc setting that adds XML files for use with this plugin.</p>
+</li>
+<li>
+<p>Make sure the iskeyword setting in the vimrc includes the hyphens and period so a GUID and filename extension are recognized a word for autocompletion (set iskeyword+=\-)</p>
+</li>
+<li>
+<p>To add the GUID part of a link in a way that deletes the GUID so you don&#8217;t reuse it:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Open the GUID text file in a vsplit :vsp guid.txt</p>
+</li>
+<li>
+<p>Position the cursor at the correct location in the topic.</p>
+</li>
+<li>
+<p>daW to delete the GUID</p>
+</li>
+<li>
+<p>ctrl-h to return to the topic and 'p' to put.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>To add a link:</p>
+</li>
+<li>
+<p><code>&lt;conref/xref/image href="..</code> then &lt;leader&gt;&lt;Tab&gt; to complete the filename.</p>
+</li>
+<li>
+<p>For a conref, the syntax is &lt;filename.xml&gt;#&lt;warehouse-topic-id&gt;/&lt;conref-id&gt;  The two id&#8217;s can be completed if the warehouse file buffer is loaded.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t want to use AutoComplPop, you can disable it with :AcpDisable.
+Then, use &lt;TAB&gt; to do standard word completion and &lt;leader&gt;&lt;Tab&gt; to do filename completion.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_formatting_columns">Formatting columns</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_method_1_when_the_text_of_each_column_is_equal_in_width">Method 1 - when the text of each column is equal in width</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Add a separator before the start of each column except the first column, such as a comma.</p>
+<div class="listingblock">
+<div class="content">
+<pre>one,two
+one,two
+one,two
+one,two</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Visually select the lines with shift-v.</p>
+</li>
+<li>
+<p>Add spaces before and after the equals sign with substitution, such as  s/,/            ,/g</p>
+<div class="listingblock">
+<div class="content">
+<pre>one          ,two
+one          ,two
+one          ,two
+one          ,two</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Use block visual select to delete the separator character (comma).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_method_2_when_the_text_of_each_column_is_unequal_in_width">Method 2 - when the text of each column is <strong>un</strong>equal in width</h3>
+<div class="paragraph">
+<p>Starting with this example:</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>hobbits,column2
+elves,column2
+dinosaurs,column2
+rumplestiltskin,column2</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Perform the steps in method 1 to create two or more columns.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>hobbits              ,column2
+elves              ,column2
+dinosaurs              ,column2
+rumplestiltskin              ,column2</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>+
+Note that the second column is uneven.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the first row, place your cursor in the screen column position you want to align the text of the second column to.</p>
+<div class="paragraph">
+<p>In this example it might be screen column 20.</p>
+</div>
+</li>
+<li>
+<p>Using ctrl-v, visually select downwards through each row.</p>
+</li>
+<li>
+<p>Press &lt;&lt; to "unindent" the right hand side of each equation towards the column you selected.</p>
+<div class="listingblock">
+<div class="content">
+<pre>hobbits            ,column2
+elves              ,column2
+dinosaurs            ,column2
+rumplestiltskin            ,column2</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Press . as many times as you need to to align the columns.</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>hobbits            ,column2
+elves              ,column2
+dinosaurs          ,column2
+rumplestiltskin    ,column2</pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Use block visual select to delete the separator character (comma).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_method_3">Method 3</h3>
+<div class="paragraph">
+<p>Use junegunn/vim-easy-align or other plugin</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vim_help">Vim Help</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>:helpgrep {word} - search Vim help</p>
+</li>
+<li>
+<p>:help index - list of all commands</p>
+</li>
+<li>
+<p>:help normal - list of normal mode commands</p>
+</li>
+<li>
+<p>:help insert - list of insert mode commands</p>
+</li>
+<li>
+<p>:help visual - list of visual mode commands</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_to_do_next">To do next</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Add more headings to vimrc for better organization</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_cheatsheets">Best cheatsheets:</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://www.zzapper.co.uk/vimtips.html" class="bare">http://www.zzapper.co.uk/vimtips.html</a></p>
+</li>
+<li>
+<p><a href="https://devhints.io/vim" class="bare">https://devhints.io/vim</a></p>
+</li>
+<li>
+<p><a href="https://blog.carbonfive.com/vim-text-objects-the-definitive-guide/" class="bare">https://blog.carbonfive.com/vim-text-objects-the-definitive-guide/</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2022-04-24 18:21:33
+</div>
+</div>
+</body>
+</html>
