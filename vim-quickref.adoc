@@ -849,9 +849,13 @@ To do this, you must clone the repo from GitHub to your local drive using the fo
 ----
 git clone https://mark-bez:
 
-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
+ghp_0HNieqqtmy
 
-@github.com/mark-bez/notes.git
+4iYQYPyu6WZQu05z88hp0W5oKE
+
+@github.com/mark-bez/
+
+notes.git
 ----
 
 I had to split it onto different lines to prevent GitHub from flagging it and disabling my token.
