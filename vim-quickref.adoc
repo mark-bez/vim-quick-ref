@@ -205,11 +205,11 @@ In other programs, a tab is a proxy for a document.
 
 == Navigate
 
-=== Jump within the line
+=== Navigate within the line
 
 f,t,F,T - using quick-scope plugin
 
-=== Jump within the screen with vim-sneak
+=== Navigate within the screen with vim-sneak
 
 Look at where you want to put the cursor and note the nearest two characters.
 
@@ -218,14 +218,14 @@ Look at where you want to put the cursor and note the nearest two characters.
 At each instance of those two characters, a code character appears in the text.
 Type the character.
 
-=== Jump within the screen with line numbers
+=== Navigate within the screen with line numbers
 
 * 10j - jumps down 10 lines remaining in the current column
 * 10k - jumps up 10 lines remaining in the current column
 * 10+ - jumps down 10 lines and places the cursor in the first column
 * 10- - jumps up 10 lines and places the cursor in the first column
  
-=== Jump to positions off the screen
+=== Navigate to positions off the screen
 
 * :n - move by line (after looking at the statusline to see how many lines the document has)
 * / or ? - search forward or backward
@@ -318,6 +318,11 @@ And adds the following modifiers:
 
 * in( - inside the next set of parentheses
 * il( - inside the previous set of parentheses
+
+== Joining lines
+
+J - join two lines with a space
+gj - join two lines with no space
 
 == Change case
 
@@ -835,13 +840,26 @@ To lint HTML:
 
 It is better to use GitHub client as this is linked to GitHub for easy push/pull without security codes and you can see the changes more easily.
 
-* :Git - gives the status
-* :q - closes the window (status window or any diff window)
-* :GV - browse the commits and view diffs
+.gv-vim commands
+* :GV - browse the commits and view diffs (uses junegunn/gv.vim plugin)
 * :GV! - browse commits and view diffs for only the current buffer
-* :Gdiff  - diffs against the last commit in a horizontal split
-* :Git blame - lists commits and person responsible
-* :Git push
+
+
+.Git Fugitive commands
+* :G[it] - open a new buffer with a summary window like git status (uses vim-fugitive), press g? for options
+* :q - closes the window (status window or any diff window)
+* :Gdiff - open a new buffer in a vertical split to show the diff vs the last commit
+* :Git diff - open a new horizontal buffer showing dirty files and unpushed and unpulled commits
+* :Git blame - list commits and person responsible
+* :Git log - open a new buffer showing the Git log
+* :Git push - push to the assigned remote
+* s - stage the file
+* u - unstage the file 
+* U - unstage everything
+* = - toggle an inline diff of the file under the cursor
+* dv - invoke a :Gvdiffsplit on the file under the cursor
+* o - open the file under the cursor in a new split
+* p - open the file under the cursor in a preview window
 
 To allow a Git repo push to the GitHub remote or pull from it, you need to use a personal access token.
 To do this, you must clone the repo from GitHub to your local drive using the following syntax:
@@ -1168,24 +1186,24 @@ The default scope of the search is the working directory.
 
 == Sessions
 
-:mks - creates a file called Session.vim in the current working directory; you can have a different Session.vim file for every project directory
-:mks! - overwrites the default Session.vim
-:mks mysesion.vim - creates a file called mysession.vim in the current working directory or other path
-gvim -S filepath/filename.vim - opens gVim and loads the saved session
-:so filepath/filename.vim to switch to a different session
+* :mks - creates a file called Session.vim in the current working directory; you can have a different Session.vim file for every project directory
+* :mks! - overwrites the default Session.vim
+* :mks mysesion.vim - creates a file called mysession.vim in the current working directory or other path
+* gvim -S filepath/filename.vim - opens gVim and loads the saved session
+* :so filepath/filename.vim to switch to a different session
 
 == Using the arglist
 
 During a working session, the buffers list becomes messy.
 An arglist can provide a stable subset of files that improves navigation.
 
-:args to list the files in the arglist
-:n to move to the next file in the list
-:first to move to the first
-:last to move to the last
-:rew same as :last
-:argadd file - add a file to the args list
-:argdel file - delete a file from the args list
+* :args to list the files in the arglist
+* :n to move to the next file in the list
+* :first to move to the first
+* :last to move to the last
+* :rew same as :last
+* :argadd file - add a file to the args list
+* :argdel file - delete a file from the args list
 
 == Calculations
 
@@ -1331,7 +1349,7 @@ one          ,two
 === Method 2 - when the text of each column is **un**equal in width
 
 Starting with this example:
-+
+
 ----
 hobbits,column2
 elves,column2

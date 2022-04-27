@@ -100,8 +100,9 @@ table {
 <li><a href="#_screen_elements">Screen elements</a></li>
 <li><a href="#_navigate">Navigate</a>
 <ul class="sectlevel2">
-<li><a href="#_jump_within_lines">Jump within lines</a></li>
-<li><a href="#_jump_within_a_screen">Jump within a screen</a></li>
+<li><a href="#_jump_within_the_line">Jump within the line</a></li>
+<li><a href="#_jump_within_the_screen_with_vim_sneak">Jump within the screen with vim-sneak</a></li>
+<li><a href="#_jump_within_the_screen_with_line_numbers">Jump within the screen with line numbers</a></li>
 <li><a href="#_jump_to_positions_off_the_screen">Jump to positions off the screen</a></li>
 <li><a href="#_navigate_files">Navigate files</a></li>
 <li><a href="#_navigate_screen_position">Navigate screen position</a></li>
@@ -112,7 +113,12 @@ table {
 <ul class="sectlevel2">
 <li><a href="#_operators">Operators</a></li>
 <li><a href="#_text_objects">Text objects</a></li>
-<li><a href="#_text_object_modifiers">Text object modifiers</a></li>
+</ul>
+</li>
+<li><a href="#_joining_lines">Joining lines</a></li>
+<li><a href="#_change_case">Change case</a>
+<ul class="sectlevel3">
+<li><a href="#_markup_language_text_objects">Markup language text objects</a></li>
 <li><a href="#_motions">Motions</a></li>
 <li><a href="#_other_editing_actions">Other editing actions</a></li>
 </ul>
@@ -208,6 +214,9 @@ table {
 </li>
 <li>
 <p>helpgrep {word} - search the help</p>
+</li>
+<li>
+<p>:set foldmethod=indent - folds XML and HTML after pretty printing</p>
 </li>
 </ul>
 </div>
@@ -665,13 +674,13 @@ Then&#8230;&#8203;</p>
 <h2 id="_navigate">Navigate</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_jump_within_lines">Jump within lines</h3>
+<h3 id="_jump_within_the_line">Jump within the line</h3>
 <div class="paragraph">
 <p>f,t,F,T - using quick-scope plugin</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jump_within_a_screen">Jump within a screen</h3>
+<h3 id="_jump_within_the_screen_with_vim_sneak">Jump within the screen with vim-sneak</h3>
 <div class="paragraph">
 <p>Look at where you want to put the cursor and note the nearest two characters.</p>
 </div>
@@ -684,11 +693,41 @@ Type the character.</p>
 </div>
 </div>
 <div class="sect2">
+<h3 id="_jump_within_the_screen_with_line_numbers">Jump within the screen with line numbers</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>10j - jumps down 10 lines remaining in the current column</p>
+</li>
+<li>
+<p>10k - jumps up 10 lines remaining in the current column</p>
+</li>
+<li>
+<p>10+ - jumps down 10 lines and places the cursor in the first column</p>
+</li>
+<li>
+<p>10- - jumps up 10 lines and places the cursor in the first column</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_jump_to_positions_off_the_screen">Jump to positions off the screen</h3>
-<div class="paragraph">
-<p>:n - move by line
-/, ? - search
-90% - jumps to the 90% line number</p>
+<div class="ulist">
+<ul>
+<li>
+<p>:n - move by line (after looking at the statusline to see how many lines the document has)</p>
+</li>
+<li>
+<p>/ or ? - search forward or backward</p>
+</li>
+<li>
+<p>90% - jumps to the 90% line number</p>
+</li>
+<li>
+<p>Collapse the folds and locate the fold you need</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -810,20 +849,6 @@ Use text object commands for editing whenever possible for greater efficiency.</
 </div>
 <div class="sect2">
 <h3 id="_text_objects">Text objects</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_text_object_modifiers">Text object modifiers</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>i - inner</p>
-</li>
-<li>
-<p>a - around</p>
-</li>
-</ul>
-</div>
 <div class="sect3">
 <h4 id="_plaintext_text_objects">Plaintext text objects</h4>
 <div class="ulist">
@@ -836,6 +861,19 @@ Use text object commands for editing whenever possible for greater efficiency.</
 </li>
 <li>
 <p>p - a paragraph</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_text_object_modifiers">Text object modifiers</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>i - inner</p>
+</li>
+<li>
+<p>a - around</p>
 </li>
 </ul>
 </div>
@@ -901,6 +939,67 @@ Also, adds the following separators:</p>
 </ul>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_joining_lines">Joining lines</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>J - join two lines with a space
+gj - join two lines with no space</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_change_case">Change case</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>~    - Changes the case of current character</p>
+</li>
+<li>
+<p>guu  - Change current line from upper to lower.</p>
+</li>
+<li>
+<p>gUU  - Change current LINE from lower to upper.</p>
+</li>
+<li>
+<p>guw  - Change to end of current WORD from upper to lower.</p>
+</li>
+<li>
+<p>guaw - Change all of current WORD to lower.</p>
+</li>
+<li>
+<p>gUw  - Change to end of current WORD from lower to upper.</p>
+</li>
+<li>
+<p>gUaw - Change all of current WORD to upper.</p>
+</li>
+<li>
+<p>g~~  - Invert case to entire line</p>
+</li>
+<li>
+<p>g~w  - Invert case to current WORD</p>
+</li>
+<li>
+<p>guG  - Change to lowercase until the end of document.</p>
+</li>
+<li>
+<p>gU)  - Change until end of sentence to upper case</p>
+</li>
+<li>
+<p>gu}  - Change to end of paragraph to lower case</p>
+</li>
+<li>
+<p>gU5j - Change 5 lines below to upper case</p>
+</li>
+<li>
+<p>gu3k - Change 3 lines above to lower case</p>
+</li>
+</ul>
+</div>
 <div class="sect3">
 <h4 id="_markup_language_text_objects">Markup language text objects</h4>
 <div class="ulist">
@@ -912,7 +1011,6 @@ Also, adds the following separators:</p>
 <p>&gt;</p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -2041,27 +2139,60 @@ The DITA file must be in the same folder as the DTD for the topic type eg concep
 <p>It is better to use GitHub client as this is linked to GitHub for easy push/pull without security codes and you can see the changes more easily.</p>
 </div>
 <div class="ulist">
+<div class="title">gv-vim commands</div>
 <ul>
 <li>
-<p>:Git - gives the status</p>
+<p>:GV - browse the commits and view diffs (uses junegunn/gv.vim plugin)</p>
+</li>
+<li>
+<p>:GV! - browse commits and view diffs for only the current buffer</p>
+</li>
+</ul>
+</div>
+<div class="ulist">
+<div class="title">Git Fugitive commands</div>
+<ul>
+<li>
+<p>:G[it] - open a new buffer with a summary window like git status (uses vim-fugitive), press g? for options</p>
 </li>
 <li>
 <p>:q - closes the window (status window or any diff window)</p>
 </li>
 <li>
-<p>:GV - browse the commits and view diffs</p>
+<p>:Gdiff - open a new buffer in a vertical split to show the diff vs the last commit</p>
 </li>
 <li>
-<p>:GV! - browse commits and view diffs for only the current buffer</p>
+<p>:Git diff - open a new horizontal buffer showing dirty files and unpushed and unpulled commits</p>
 </li>
 <li>
-<p>:Gdiff  - diffs against the last commit in a horizontal split</p>
+<p>:Git blame - list commits and person responsible</p>
 </li>
 <li>
-<p>:Git blame - lists commits and person responsible</p>
+<p>:Git log - open a new buffer showing the Git log</p>
 </li>
 <li>
-<p>:Git push</p>
+<p>:Git push - push to the assigned remote</p>
+</li>
+<li>
+<p>s - stage the file</p>
+</li>
+<li>
+<p>u - unstage the file</p>
+</li>
+<li>
+<p>U - unstage everything</p>
+</li>
+<li>
+<p>= - toggle an inline diff of the file under the cursor</p>
+</li>
+<li>
+<p>dv - invoke a :Gvdiffsplit on the file under the cursor</p>
+</li>
+<li>
+<p>o - open the file under the cursor in a new split</p>
+</li>
+<li>
+<p>p - open the file under the cursor in a preview window</p>
 </li>
 </ul>
 </div>
@@ -2071,8 +2202,19 @@ To do this, you must clone the repo from GitHub to your local drive using the fo
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>git clone https://mark-bez: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@github.com/mark-bez/notes.git</pre>
+<pre>git clone https://mark-bez:
+
+ghp_0HNieqqtmy
+
+4iYQYPyu6WZQu05z88hp0W5oKE
+
+@github.com/mark-bez/
+
+notes.git</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>I had to split it onto different lines to prevent GitHub from flagging it and disabling my token.</p>
 </div>
 </div>
 </div>
@@ -2572,6 +2714,10 @@ If you write and close the file then reopen it, all of the folds should be prope
 <p>The color of the folds is set in the vimrc to look great with Gruvbox dark with:
 highlight Folded guifg=goldenrod2</p>
 </div>
+<div class="paragraph">
+<p>To fold HTML or XML after pretty printing:
+:set foldmethod=indent</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2998,6 +3144,10 @@ Only files in the present working directory and subfolders will be available for
 <p>If you don&#8217;t want to use AutoComplPop, you can disable it with :AcpDisable.
 Then, use &lt;TAB&gt; to do standard word completion and &lt;leader&gt;&lt;Tab&gt; to do filename completion.</p>
 </div>
+<div class="paragraph">
+<p>To fold XML or HTML after pretty printing:
+:set foldmethod=indent</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -3181,7 +3331,7 @@ rumplestiltskin    ,column2</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-24 18:21:33
+Last updated 2022-04-26 21:17:55
 </div>
 </div>
 </body>
