@@ -234,11 +234,12 @@ Type the character.
 
 === Navigate files
 
-* gf - goto filename
+* gf - open file whose filename is under the cursor
+* gx - open the URL under the cursor in the default browser - must be a complete auto-underlined URL
 * ^ - jump back to previous file after gf
-* Ctrl-w f - open the file in a new window
+* Ctrl-w f - open the file whose filename is under the cursor in a new window
 
-To make it work, you may need to change the path setting or change how you write the file.
+To make gf work, you may need to change the path setting or change how you write the file.
 Instead of `tasks.adoc` you may need to write `./admin/notes/tasks.adoc`.
 Or the current working directory may need to be the directory that the current buffer is in.
 Or, you may need to change the scope of the 'path' setting.
@@ -318,6 +319,15 @@ And adds the following modifiers:
 
 * in( - inside the next set of parentheses
 * il( - inside the previous set of parentheses
+
+
+== Deleting to a word
+
+In Normal mode:
+
+d/hobbits - deletes up to the word hobbits
+c/hobbits - deletes up to the word hobbits and enters Insert mode
+v/hobbits - visually selects up to the word hobbits
 
 == Joining lines
 
@@ -456,12 +466,13 @@ To see a list of words:
 == Miscellaneous
 
 * @: - repeat the last commandline command, followed by @@ for additional repeats
+* :set cmdheight=n - Change height of commandline
 * ctrl-c - Abort insert mode and abandon changes
 * https://vimhelp.org/ - official help
 * :vert h:<topic> - Open the Help in a vertical split
 * :tab h<topic> - Open the Help in a tab to make it easier to read
-* :set scb to scroll two vertical splits together
-* :set noscb to stop scrolling two vertical splits together
+* :set scb (scrollbind) on both windows to scroll two vertical splits together
+* :set noscb on one window to stop scrolling two vertical splits together
 * :r file1 - paste the contents of file1 at the current cursor position - great for templates
 * :%s/$^\n// - removing blank lines
 * :%s/$^\n\n// - removing two blank lines
@@ -653,15 +664,36 @@ I have mapped filename completion in the vimrc to <leader><Tab> to reduce keystr
 To insert-complete filenames with extensions, you need to add the . character to the definition of a word.
 To insert-complete filenames with hyphens you need to add the - character to the definition of a word.
 
-:set iskeyword+=\- 
-:set iskeyword+=\.
-
 Filename completion is harder to achieve.
 An alternative is to create a text file list of filenames with:
 $dir /b >dir.txt
 You can then use regular word complete to complete filenames instead of the ctrl-x ctrl-f completion.
 
 See :h ins-completion.
+
+=== Change the definition of a word
+
+Vim has a way of defining what is constituted as a word.
+This is important when:
+
+* Using commands such as ciw to change the word, delete the word, etc.
+* Moving forwards and backwards by a word with w and b.
+* When using regular expressions to perform substitutions that are more efficient if for example hypens and/or periods are considered part of the word instead of breaking two words.
++
+This is important for use with DITA XML at Cepheid when needing to do massive substitutions.
+For example, you may also want to include the filename extension in the definition of a word so the period to not break the word.
+
+To include hyphens and periods in the definition of a word:
+
+:set iskeyword+=\- 
+:set iskeyword+=\.
+
+To remove hyphens and periods from the definition of a word:
+
+:set iskeyword-=\- 
+:set iskeyword-=\.
+
+For general prose, it is better to break words when there is a hyphen or a period.
 
 === Omni completion
 
@@ -737,11 +769,11 @@ This can also be set in the vimrc.
 
 == Collect lines matching a pattern
 
-Uses the g global command.
+Uses the 'g' global command and 'v' global NOT command.
 
 Either:
 
-. :g/pattern/y a - copy lines with the pattern to register a or use A to append to register A.
+. :%g/pattern/y A - copy all lines matching the pattern to register a - using uppercase A ensures all lines are copied and not just the last line.
 . :new newfile.txt
 . "ap - to paste
 
@@ -752,18 +784,18 @@ Or,
 
 This one uses a mapping in the vimrc.
 
-NOTE: This is different from vimgrep.
-With vimgrep, the lines are truncated in the quickfix list so you can't copy out the whole line.
+NOTE: Using the global command to collect lines is different from using vimgrep.
+With vimgrep, the lines are truncated in the quickfix list so you can't copy out the whole line. In addition, there is information in the quickfix list lines other than the text of the line.
 
 * %g/hobbit/m$ - moves lines in the document containg the word hobbit to the end of the document
 
-The v command is the inVerse of g.
+The v command is the *inVerse* of g.
 Therefore:
 
 * %g/foo/d - delete all lines in the document that contain 'foo'
-* %v/foo/d - delete all lines in the document that DO NOT contain 'foo'
-* %v/foo/m$ - move all lines that DO NOT contain 'foo' to the end of the document
-* :v/foo/ then F3 - copy all lines that DO NOT contain foo and paste them into a new buffer
+* %v/foo/d - delete all lines in the document that DO NOT contain 'foo' (v means NOT)
+* %v/foo/m$ - move all lines that DO NOT contain 'foo' to the end of the document (v means NOT)
+* :v/foo/ then F3 - copy all lines that DO NOT contain foo and paste them into a new buffer (v means NOT)
 * :g/foo/j - join any line containing 'foo' to its subsequent line
 
 == Format HTML
@@ -1087,17 +1119,24 @@ After generating, use :bd to close the window and return to the document.
 * zm - close a fold by one level 
 * zR - open all folds 
 * zM - close folds <leader>x - initiate code folding in XML files 
+* zj - move cursor down one fold
+* zk - move cursor up one fold
 
 If the cold folding doesn't work for a section, the fold may have been deleted with zd.
-If you write and close the file then reopen it, all of the folds should be properly remade.
-
-To define the characters used for folding...TO DO
+Use :e to reload the file and refold.
 
 The color of the folds is set in the vimrc to look great with Gruvbox dark with:
+
 highlight Folded guifg=goldenrod2
 
 To fold HTML or XML after pretty printing:
+
 :set foldmethod=indent
+
+To fold AsciiDoc with the AsciiDoc plugins I use, several different fold methods seem to work:
+
+* :set foldmethod=expr
+* :set foldmethod=manual
 
 == Copy filepath
 
@@ -1144,6 +1183,16 @@ For example:
 :%s//replacement/g
 
 You can also use ctrl-r / to paste in the previous search pattern.
+
+== End-of-line characters
+
+\r is the carriage return characters.
+
+\n is the newline character.
+
+The Windows end-of-line sequence is:
+
+\r\n
 
 == vimgrep to list lines that match a pattern
 
