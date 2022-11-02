@@ -137,6 +137,14 @@ Then...
 * =	- a read-only buffer
 * +	- a modified buffer
 
+== Abbreviations
+:iab word1 word2 - Add an insert mode abbreviation - replace word1 with word2 
+:iuna word - Remove an insert mode abbreviation from the list
+:Bufferize iab - list current insert mode abbreviations in a buffer
+:Bufferize cab - list current command mode abbreviations in a buffer
+<space> - adds a space to a word
+
+
 == Switch between buffers
 
 * [b = switch to the next buffer in the rotation
@@ -173,7 +181,8 @@ Vim will quit when you:
 * :bd - close the active buffer, prompting you if there are unwritten changes
 * :bd! - close the active buffer and delete unwritten changes
 * :e! - overwrite the open buffer with what is saved on the drive
-* :10,25bd - close buffers 10-25
+* :10,25bd - close all buffers between 10 and 25
+* :bd 3 5 - close buffers 3 and 5
 
 .Windows
 * :clo {count} - close the window without deleting the active buffer. Will not close the last window i.e. the application.
@@ -202,6 +211,10 @@ Vim will quit when you:
 * statusline - shows information about the buffer
 
 In other programs, a tab is a proxy for a document.
+
+== Window size
+:set lines=100
+:set columns=200
 
 == Navigate
 
@@ -590,6 +603,15 @@ To use this, first select the quickfix window (otherwise the 'p' keystroke will 
 * Shift-Home, Shift-End - Scroll to first/last line of displayed buffer in the preview
 * r - Scroll back to error line corresponding to the quickfix list item ("reset")
 * q, Ctrl-c - Close the popup window: 
+
+== Capture any list in a buffers
+Use the Bufferize plugin with:
+
+:Bufferize {command}
+
+For example:
+
+:Bufferize ab - lists the current abbreviations list
 
 == Preview window
 
@@ -1291,6 +1313,7 @@ For entering extended characters in XML, you can also use &#nn; (decimal form) o
 There are two ways to enter extended characters in Vim.
 
 === Entry with Digraphs
+Cheatsheet: https://devhints.io/vim-digraphs
 
 Digraphs use two-character codes.
 To see the codes:
