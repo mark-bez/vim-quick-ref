@@ -1313,7 +1313,8 @@ For entering extended characters in XML, you can also use &#nn; (decimal form) o
 There are two ways to enter extended characters in Vim.
 
 === Entry with Digraphs
-Cheatsheet: https://devhints.io/vim-digraphs
+* Cheatsheet 1: https://devhints.io/vim-digraphs
+* Cheatsheet 2: https://www.cs.auckland.ac.nz/references/gnu/vim/digraph.html
 
 Digraphs use two-character codes.
 To see the codes:
