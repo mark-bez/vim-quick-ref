@@ -507,6 +507,9 @@ To see a list of words:
 :!rename % file2
 :!rename file1 file2
 
+== Removing ^M
+:%s/<ctrl-v><ctrl-m>/\r/g
+
 == Run a macro
 
 * qN - start a macro recording and store in N
