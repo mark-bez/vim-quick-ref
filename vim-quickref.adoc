@@ -121,6 +121,7 @@ Then...
 * :ball - open all loaded buffers in their own horizontal window
 * :vert ball - open all loaded buffers in their own vertical window
 * :view <filename> - open the buffer as read-only
+* :BD - closes a buffer while keeping the window open
 
 == Buffers list
 
@@ -230,6 +231,12 @@ Look at where you want to put the cursor and note the nearest two characters.
 
 At each instance of those two characters, a code character appears in the text.
 Type the character.
+
+; to go to the nexxt match.
+
+ctrl-o to go back to the start.
+
+dzqt - delete to qt
 
 === Navigate within the screen with line numbers
 
@@ -410,16 +417,22 @@ gj - join two lines with no space
 
 == Resize text
 
+<leader><leader>+ +
+<leader><leader>+ -
+
+////
 . Hold down and do not release the spacebar.
 . Either:
-* To make smaller: Press and release the equals key (=), brief pause, then *quickly* press the minus key (-) one or more times as needed.
 * To make larger: Press and release the equals key (=), brief pause, then *quickly* press the equals key (=) again one or more times as needed.
+* To make smaller: Press and release the equals key (=), brief pause, then *quickly* press the minus key (-) one or more times as needed.
 
 . Release the spacebar.
+////
 
 Alternatively:
 
-:set guifont=*
+* :set guifont=*
+* :set guifont=Roboto_Mono:h16
 
 == Mapped function keys
 
@@ -633,10 +646,6 @@ If you want the preview window to open as a popup:
 
 https://codeyarns.com/tech/2011-07-29-vim-chart-of-color-names.html
 
-== Change the font
-
-* :set guifont=Roboto_Mono:h16
-* :set guifont=*
 
 == Insert completion
 
@@ -901,7 +910,6 @@ It is better to use GitHub client as this is linked to GitHub for easy push/pull
 * :GV - browse the commits and view diffs (uses junegunn/gv.vim plugin)
 * :GV! - browse commits and view diffs for only the current buffer
 
-
 .Git Fugitive commands
 * :G[it] - open a new buffer with a summary window like git status (uses vim-fugitive), press g? for options
 * :q - closes the window (status window or any diff window)
@@ -909,6 +917,7 @@ It is better to use GitHub client as this is linked to GitHub for easy push/pull
 * :Git diff - open a new horizontal buffer showing dirty files and unpushed and unpulled commits
 * :Git blame - list commits and person responsible
 * :Git log - open a new buffer showing the Git log
+* :Gclog - opens the diff with the previous commit and opens a quickfix list with a list of commits that you can then use to open other diffs
 * :Git push - push to the assigned remote
 * s - stage the file
 * u - unstage the file 
@@ -937,14 +946,33 @@ I had to split it onto different lines to prevent GitHub from flagging it and di
 
 == Diff two buffers
 
-* :windo difft - diffs two buffers in vertical splits
+Three ways to bring up windows to diff:
+
+* :windo difft - diffs two buffers
 * Open file1, then :diffsplit file2
 * Win key vdiff file1 file2
 
 To copy a difference from one split to the other:
 
-* dp - put, when the cursor is on the line to copy
-* do - get, when the cursor is on the line that is empty
+* dp (or :diffput) - put, when the cursor is on the line to copy
+* do (or :diffget) - get, when the cursor is on the line that is empty
+
+Toggle vertican and horizontal windows:
+
+* ctrl-K - change from vertical to horizontal diff split.
+* ctrl-H - change from horizontal to vertical diff split.
+
+[c - go to the next difference
+]c - go to the previous difference
+
+Export the diff to an HTML file:
+
+:TOhtml | w ~/Desktop/diff.html
+
+Note: It is TO and not To.
+
+The first command generates the HTML.
+The second command (after the pipe) writes it to the file.
 
 == Marks
 
@@ -958,12 +986,19 @@ To copy a difference from one split to the other:
 * :del abc - delete marks a, b, and c
 * d'N - delete from the cursor to the beginning of the line containing marker N
 * d`N - delete from the cursor to the line/column position of marker N
+
+== Navigating back in Normal mode
+
 * '' - return to the line where the cursor was before the last jump  (Two single quotes)
 * `` - return to the cursor position before the last jump - undoes the jump (Two back ticks)
-* `^ - return to the last position of cursor in insert mode
 * `. - return to the last change in current buffer
 * `" - return to the last exited current buffer
 * `0 - go to the file other than this one that you last edited
+* g; - places cursor at the last place an edit was made without undoing the edit, repeat to go back in history
+* g, - repeat to go forward in the history of edits
+* gi - return to the last position of cursor in insert mode
+* ctrl-o - moves back to older jumps, including to a file that was just closed
+* ctrl-i - moves forward in the jumplist
 
 Using kshenoy/vim-signature to place marks in the sign column.
 To stop showing marks in the sign column:
@@ -1001,8 +1036,8 @@ So far, gruvbox with background=light works well.
 * :oldfiles - default vim
 * :undolist -
 * :map - lists the characters that are mapped
-* :bro[wse] old[files]
-* :Oldfiles - uses plugin
+* :Oldfiles - uses plugin to put oldfiles into the quickfix list
+* :tabs - shows a list of the open tabs with their buffers - very useful
 
 == Jumps
 
