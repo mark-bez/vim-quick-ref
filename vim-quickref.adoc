@@ -1391,6 +1391,52 @@ For substitutions:
 
 :%s/<Ctrl-v>u200e//g
 
+== Regular expressions
+
+To see which characters need to be escaped, see:
+
+h: magic
+
+Magic mode is the default mode for Vim regular expressions.
+
+The characters that I typically need to backslash with Magic mode are:
+
+* ( When making a group
+* ) When making a group
+* \ For literal backslashes in file paths
+* . For literal dots in filenames
+* ^ Literal ^
+* $ Literal $
+
+Pattern items also need to be escaped with a backslash.
+
++ One or more
+? Zero or one
+{n} Exactly that number 
+{n,} At least n
+@>  Matches the whole pattern in the replace
+@! Requires NO match
+_. Any single character or newline (great option!)
+< Beginning of word
+> End of word
+%^ Beginning of file
+%$ End of file
+s Whitespace character
+S Non-whitespace character
+d Digit
+D non-digit
+w Word character
+W Non-word character
+a Alphabetic character
+l Lowercase character
+u uppercase character
+r <CR>
+n End of line
+1 First group in the pattern
+2 Second group in the pattern
+c Ignore case (when ignorecase option is not set)
+C Match case (when ignorecase option is not set)
+
 [#writing-xml]
 == Writing XML
 
