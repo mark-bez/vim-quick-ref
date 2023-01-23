@@ -933,9 +933,7 @@ To do this, you must clone the repo from GitHub to your local drive using the fo
 ----
 git clone https://mark-bez:
 
-ghp_0HNieqqtmy
-
-4iYQYPyu6WZQu05z88hp0W5oKE
+token
 
 @github.com/mark-bez/
 
