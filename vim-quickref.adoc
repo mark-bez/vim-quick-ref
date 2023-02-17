@@ -414,6 +414,7 @@ gj - join two lines with no space
 * :set wrap - turns on soft wrap
 * :set linebreak - forces the soft wrapping at word boundaries instead of inside words
 * :set tw=0 - stops automatic hard wrapping at a column
+* :set formatoption-=t - use this if hardwrapping is automatic and can't figure it out
 
 == Resize text
 
