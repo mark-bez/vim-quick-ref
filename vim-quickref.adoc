@@ -1254,22 +1254,32 @@ The Windows end-of-line sequence is:
 
 == vimgrep to list lines that match a pattern
 
-* :vimgrep word %
+* :vimgrep //g - use the current search pattern for vimgrep
+* :vimgrep /{paste in current search pattern with ctrl-r/}
+* First search with / and then :vimgrep //g % to do the vimgrep. This highlights all the matches.
+* :vimgrep word % - only finds the first match in each file
 * :vimgrep "words with spaces" %
 * :vimgrep /words with spaces/ %
-* :vimgrep word g %
+* :vimgrep word /g% - finds all matches in each file
+* :vimgrep /word/g ## - acts on arglist
 * :vimgrep word gj% %
-* :copen
-
 * g = global in the file (lists each instance on a separate quickfix line if line has multiple matches)
 * j = do not automatically jump to the first match
-* % = include in the listing which file you're on (eg 2 of 5) (the first %)
+* %(with no space) = include in the listing which file you're on (eg 2 of 5) (the first %)
 * % = search the current buffer (the second %)
+* :vimgrep /word/g git ls-files - search all tracked files in Git project
+* :vim - same as vimgrep
+* :copen
+* :cclose
+* :vimgrep word **/*.txt - search within folders
+* :cn and :cp to navigate quickfix list
+* :cc n - navigate to nth item in quickfix list
+* :colder and cnewer - view previous quickfix lists
+* :vimgrepa - appends new search to bottom of current quickfix list
 
 For location list, specific to the window, instead of the global quickfix list:
 
-* :lvimgrep word %
-* :lvimgrep /words with spaces/ %
+* :lvimgrep word % - populates current window's location list instead of quickfix list allowing multiple across file searches at once.
 * :lopen
 
 vimgrep is for searching and listing not collecting lines of text.
