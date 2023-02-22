@@ -5,8 +5,9 @@
 :stylesheet: material-blue.css
 :doctype: article
 
-== Super tips
 
+== Super tips
+* vimgrep.org for the manual
 * q: or :ctrl-f - editable list of recent commands, select a command and press ENTER to issue
 * helpgrep {word} - search the help
 * :set foldmethod=indent - folds XML and HTML after pretty printing
@@ -1406,47 +1407,102 @@ For substitutions:
 
 To see which characters need to be escaped, see:
 
-h: magic
+* h: magic
+* h:ordinary-atom
+* https://andrewradev.com/2011/05/08/vim-regexes/
 
 Magic mode is the default mode for Vim regular expressions.
-
 The characters that I typically need to backslash with Magic mode are:
 
-* ( When making a group
-* ) When making a group
+* ( When making a subexpression group
+* ) When making a subexpression group
 * \ For literal backslashes in file paths
 * . For literal dots in filenames
 * ^ Literal ^
 * $ Literal $
+* # Literal # 
 
-Pattern items also need to be escaped with a backslash.
+IMPORTANT: The following pattern items also need to be escaped with a backslash:
 
-+ One or more
-? Zero or one
-{n} Exactly that number 
-{n,} At least n
-@>  Matches the whole pattern in the replace
-@! Requires NO match
-_. Any single character or newline (great option!)
-< Beginning of word
-> End of word
-%^ Beginning of file
-%$ End of file
-s Whitespace character
-S Non-whitespace character
-d Digit
-D non-digit
-w Word character
-W Non-word character
-a Alphabetic character
-l Lowercase character
-u uppercase character
-r <CR>
-n End of line
-1 First group in the pattern
-2 Second group in the pattern
-c Ignore case (when ignorecase option is not set)
-C Match case (when ignorecase option is not set)
+* + One or more
+* ? Zero or one
+* * Zero or more
+* { } An interval
+* {n} Exactly that number 
+* {n,} At least n
+* @>  Matches the whole pattern in the replace
+* @! Requires NO match
+* _. Any single character or newline (great option!)
+* < Beginning of word
+* > End of word
+* %^ Beginning of file
+* %$ End of file
+* s Whitespace character
+* S Non-whitespace character
+* d Digit character
+* D non-digit character
+* w Word character
+* W Non-word character
+* a Alphabetic character
+* l Lowercase character
+* u uppercase character
+* r carriage return <CR>
+* n newline
+* zs start of anything to create a boundary
+* ze end of anything to create a boundary
+* 1 First group in the pattern
+* 2 Second group in the pattern
+* c Ignore case (when ignorecase option is not set)
+* C Match case (when ignorecase option is not set)
+
+=== Lookarounds
+
+Lookahead:
+Match -> Zero-width match
+
+Lookbehind:
+Zero-width match <- match
+
+
+
+=== Positive lookahead
+XY 
+
+Look for X but only make a match if Y is in front (ahead) of it.
+The Y is zero-width (not included in the match).
+
+XY\@=
+
+Matches the X in XY but not the X in XP.
+
+=== Positive lookbehind
+XY
+
+Look for Y but only make a match if X is behind (preceding) it.
+The X is zero-width (not included in the match).
+
+X\@<=Y
+
+Matches the Y in XY but not in QY.
+
+=== Negative lookahead
+XY
+
+Look for X but only make a match if there is NOT a Y in front (ahead) of it.
+
+XY\@!
+
+Matches X in XS but not X in XY.
+
+=== Negative lookbehind
+XY
+
+Look for Y but only make a match if there is NOT an X behind (preceding) it.
+
+X\@<!Y
+
+Matches the Y in WY but not the Y in XY.
+
 
 [#writing-xml]
 == Writing XML
