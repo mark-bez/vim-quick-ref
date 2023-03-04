@@ -535,6 +535,18 @@ To see a list of words:
 
 qaq to empty register a before storing a macro in register a.
 
+To edit macro a on the commandline:
+
+. :let @a='<ctrl-r><ctrl-r>a (do not press ENTER).
+. Make the edit.
+. Add the closing '.
+. Press ENTER.
+
+Store macros you want to keep in a buffer.
+Paste them in with "ap (for buffer a).
+You can also edit them in the buffer.
+To put the line back into the a register, select the line then "ayy
+
 == Change current working directory
 
 * :cd <relative path> - change current working directory for the session
@@ -1409,7 +1421,6 @@ To see which characters need to be escaped, see:
 
 * h: magic
 * h:ordinary-atom
-* https://andrewradev.com/2011/05/08/vim-regexes/
 
 Magic mode is the default mode for Vim regular expressions.
 The characters that I typically need to backslash with Magic mode are:
@@ -1448,60 +1459,11 @@ IMPORTANT: The following pattern items also need to be escaped with a backslash:
 * u uppercase character
 * r carriage return <CR>
 * n newline
-* zs start of anything to create a boundary
-* ze end of anything to create a boundary
 * 1 First group in the pattern
 * 2 Second group in the pattern
 * c Ignore case (when ignorecase option is not set)
 * C Match case (when ignorecase option is not set)
 
-=== Lookarounds
-
-Lookahead:
-Match -> Zero-width match
-
-Lookbehind:
-Zero-width match <- match
-
-
-
-=== Positive lookahead
-XY 
-
-Look for X but only make a match if Y is in front (ahead) of it.
-The Y is zero-width (not included in the match).
-
-XY\@=
-
-Matches the X in XY but not the X in XP.
-
-=== Positive lookbehind
-XY
-
-Look for Y but only make a match if X is behind (preceding) it.
-The X is zero-width (not included in the match).
-
-X\@<=Y
-
-Matches the Y in XY but not in QY.
-
-=== Negative lookahead
-XY
-
-Look for X but only make a match if there is NOT a Y in front (ahead) of it.
-
-XY\@!
-
-Matches X in XS but not X in XY.
-
-=== Negative lookbehind
-XY
-
-Look for Y but only make a match if there is NOT an X behind (preceding) it.
-
-X\@<!Y
-
-Matches the Y in WY but not the Y in XY.
 
 
 [#writing-xml]
