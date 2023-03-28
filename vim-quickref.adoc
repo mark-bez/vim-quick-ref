@@ -11,6 +11,7 @@
 * q: or :ctrl-f - editable list of recent commands, select a command and press ENTER to issue
 * helpgrep {word} - search the help
 * :set foldmethod=indent - folds XML and HTML after pretty printing
+* d/word Delete up to a word in normal mode
 
 == Start Vim with a session
 
@@ -1241,21 +1242,6 @@ Copies to unnamed register "
     matches 0 or 1 of the preceding atom  \=
               separates two alternatives  \|
 
-== Regular expressions
-
-To set up a regex:
-
-. Use the search to identify the expression that matches what you want (/)
-. Build the substitution expression with an empty match, which defaults to the last search pattern.
-
-For example:
-
-/pattern
-
-:%s//replacement/g
-
-You can also use ctrl-r / to paste in the previous search pattern.
-
 == End-of-line characters
 
 \r is the carriage return characters.
@@ -1416,6 +1402,18 @@ For substitutions:
 :%s/<Ctrl-v>u200e//g
 
 == Regular expressions
+To set up a regex:
+
+. Use the search to identify the expression that matches what you want (/)
+. Build the substitution expression with an empty match, which defaults to the last search pattern.
+
+For example:
+
+/pattern
+
+:%s//replacement/g
+
+You can also use ctrl-r / to paste in the previous search pattern.
 
 To see which characters need to be escaped, see:
 
@@ -1464,7 +1462,17 @@ IMPORTANT: The following pattern items also need to be escaped with a backslash:
 * c Ignore case (when ignorecase option is not set)
 * C Match case (when ignorecase option is not set)
 
+Vim does not support character classes inside groups, so for example:
 
+[\w] does not work.
+
+You have to use POSIX instead like this:
+
+[[:space:]]
+
+So, to replace any character between XML tags with an X use this:
+
+%s/<p>[[:space:][:alnum:]]<\/p>/<p>X<\/p>/g
 
 [#writing-xml]
 == Writing XML
